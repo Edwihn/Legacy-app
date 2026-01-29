@@ -189,7 +189,7 @@ export const updateTask = async (
             updates.projectId = null;
         }
 
-        // Registrar cambios en el historial
+        // Registrar cambios en el historial y crear notificaciones
         if (updates.status && updates.status !== oldTask.status) {
             await History.create({
                 taskId: task._id,
@@ -204,6 +204,26 @@ export const updateTask = async (
                     },
                 },
             });
+
+            // Notificar cambio de estado
+            if (oldTask.assignedTo && oldTask.assignedTo.toString() !== req.user!._id.toString()) {
+                await Notification.create({
+                    userId: oldTask.assignedTo,
+                    message: `Estado de "${task.title}" cambió de ${oldTask.status} a ${updates.status}`,
+                    type: 'task_updated',
+                    relatedTaskId: task._id,
+                });
+            }
+
+            // Si se completó, notificar al creador
+            if (updates.status === 'Completada' && oldTask.createdBy.toString() !== req.user!._id.toString()) {
+                await Notification.create({
+                    userId: oldTask.createdBy,
+                    message: `Tarea "${task.title}" fue completada`,
+                    type: 'task_completed',
+                    relatedTaskId: task._id,
+                });
+            }
         }
 
         if (updates.title && updates.title !== oldTask.title) {
@@ -241,11 +261,32 @@ export const updateTask = async (
                 },
             });
 
-            // Crear notificación solo si es un usuario diferente
-            if (newAssignedTo) {
+            // Crear notificación para el nuevo asignado
+            if (newAssignedTo && newAssignedTo !== req.user!._id.toString()) {
                 await Notification.create({
                     userId: newAssignedTo,
-                    message: `Tarea actualizada: ${updates.title || task.title}`,
+                    message: `Te asignaron la tarea: "${updates.title || task.title}"`,
+                    type: 'task_assigned',
+                    relatedTaskId: task._id,
+                });
+            }
+        } else if (updates.hasOwnProperty('assignedTo') && !newAssignedTo && oldAssignedTo) {
+            // Notificar cuando se desasigna una tarea
+            await Notification.create({
+                userId: oldAssignedTo,
+                message: `Fuiste desasignado de la tarea: "${task.title}"`,
+                type: 'task_updated',
+                relatedTaskId: task._id,
+            });
+        }
+
+        // Notificar otros cambios importantes
+        if ((updates.priority && updates.priority !== oldTask.priority) ||
+            (updates.dueDate && updates.dueDate !== oldTask.dueDate)) {
+            if (oldTask.assignedTo && oldTask.assignedTo.toString() !== req.user!._id.toString()) {
+                await Notification.create({
+                    userId: oldTask.assignedTo,
+                    message: `La tarea "${task.title}" fue actualizada`,
                     type: 'task_updated',
                     relatedTaskId: task._id,
                 });
@@ -303,6 +344,26 @@ export const deleteTask = async (
             oldValue: task.title,
             newValue: '',
         });
+
+        // Notificar al asignado si existe y no es quien la eliminó
+        if (task.assignedTo && task.assignedTo.toString() !== req.user!._id.toString()) {
+            await Notification.create({
+                userId: task.assignedTo,
+                message: `La tarea "${task.title}" fue eliminada`,
+                type: 'task_deleted',
+                relatedTaskId: task._id,
+            });
+        }
+
+        // Notificar al creador si no es quien la eliminó
+        if (task.createdBy && task.createdBy.toString() !== req.user!._id.toString()) {
+            await Notification.create({
+                userId: task.createdBy,
+                message: `La tarea "${task.title}" fue eliminada`,
+                type: 'task_deleted',
+                relatedTaskId: task._id,
+            });
+        }
 
         await task.deleteOne();
 
