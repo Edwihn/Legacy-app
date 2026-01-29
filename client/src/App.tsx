@@ -8,6 +8,7 @@ import LoginPage from './pages/LoginPage';
 import DashboardPage from './pages/DashboardPage';
 import TasksPage from './pages/TasksPage';
 import ProjectsPage from './pages/ProjectsPage';
+import ReportsPage from './pages/ReportsPage';
 
 // Protected Route Component
 const ProtectedRoute: React.FC<{ children: React.ReactNode }> = ({ children }) => {
@@ -42,6 +43,14 @@ const App: React.FC = () => {
                         element={
                             <ProtectedRoute>
                                 <ProjectsPage />
+                            </ProtectedRoute>
+                        }
+                    />
+                    <Route
+                        path="/reports"
+                        element={
+                            <ProtectedRoute>
+                                <ReportsPage />
                             </ProtectedRoute>
                         }
                     />
