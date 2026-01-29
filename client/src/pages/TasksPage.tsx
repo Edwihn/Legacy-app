@@ -501,6 +501,9 @@ const TasksPage: React.FC = () => {
                                             Proyecto
                                         </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                            Asignado a
+                                        </th>
+                                        <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Vencimiento
                                         </th>
                                         <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -533,6 +536,14 @@ const TasksPage: React.FC = () => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
                                                 {task.projectId?.name || 'Sin proyecto'}
+                                            </td>
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                                                <div className="flex items-center">
+                                                    <div className="flex-shrink-0 h-6 w-6 rounded-full bg-indigo-100 flex items-center justify-center text-xs font-medium text-indigo-600 mr-2">
+                                                        {(task.assignedTo?.username || '?').charAt(0).toUpperCase()}
+                                                    </div>
+                                                    {task.assignedTo?.username || 'Sin asignar'}
+                                                </div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                 {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'Sin fecha'}
