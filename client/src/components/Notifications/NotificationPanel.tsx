@@ -30,7 +30,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
         try {
             await notificationService.markAsRead([id]);
             setNotifications(notifications.map(n =>
-                n._id === id ? { ...n, isRead: true } : n
+                n._id === id ? { ...n, read: true } : n
             ));
             toast.success('Marcada como leída');
         } catch (error: any) {
@@ -41,7 +41,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
     const handleMarkAllAsRead = async () => {
         try {
             await notificationService.markAllAsRead();
-            setNotifications(notifications.map(n => ({ ...n, isRead: true })));
+            setNotifications(notifications.map(n => ({ ...n, read: true })));
             toast.success('Todas marcadas como leídas');
         } catch (error: any) {
             toast.error('Error al marcar todas como leídas');
@@ -97,7 +97,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
         return date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
     };
 
-    const unreadCount = notifications.filter(n => !n.isRead).length;
+    const unreadCount = notifications.filter(n => !n.read).length;
 
     return (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -155,13 +155,13 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
                                 <div
                                     key={notification._id}
                                     className={`p-4 rounded-lg border-2 transition-all hover:shadow-md ${getNotificationColor(notification.type)
-                                        } ${!notification.isRead ? 'border-l-4' : ''}`}
+                                        } ${!notification.read ? 'border-l-4' : ''}`}
                                 >
                                     <div className="flex items-start justify-between">
                                         <div className="flex items-start space-x-3 flex-1">
                                             <span className="text-2xl">{getNotificationIcon(notification.type)}</span>
                                             <div className="flex-1">
-                                                <p className={`text-sm ${!notification.isRead ? 'font-semibold text-gray-900' : 'text-gray-700'}`}>
+                                                <p className={`text-sm ${!notification.read ? 'font-semibold text-gray-900' : 'text-gray-700'}`}>
                                                     {notification.message}
                                                 </p>
                                                 <p className="text-xs text-gray-500 mt-1">
@@ -170,7 +170,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
                                             </div>
                                         </div>
                                         <div className="flex items-center space-x-2 ml-4">
-                                            {!notification.isRead && (
+                                            {!notification.read && (
                                                 <button
                                                     onClick={() => handleMarkAsRead(notification._id)}
                                                     className="text-blue-600 hover:text-blue-800 text-xs font-medium"

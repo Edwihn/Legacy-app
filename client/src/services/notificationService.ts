@@ -5,7 +5,7 @@ export interface Notification {
     userId: string;
     message: string;
     type: 'task_assigned' | 'task_updated' | 'task_completed' | 'task_deleted' | 'project_created' | 'comment_added';
-    isRead: boolean;
+    read: boolean;
     relatedTaskId?: string;
     relatedProjectId?: string;
     createdAt: string;
@@ -32,7 +32,7 @@ export const notificationService = {
      */
     markAllAsRead: async (): Promise<void> => {
         const notifications = await notificationService.getNotifications();
-        const unreadIds = notifications.filter(n => !n.isRead).map(n => n._id);
+        const unreadIds = notifications.filter(n => !n.read).map(n => n._id);
         if (unreadIds.length > 0) {
             await notificationService.markAsRead(unreadIds);
         }
@@ -50,6 +50,6 @@ export const notificationService = {
      */
     getUnreadCount: async (): Promise<number> => {
         const notifications = await notificationService.getNotifications();
-        return notifications.filter(n => !n.isRead).length;
+        return notifications.filter(n => !n.read).length;
     },
 };

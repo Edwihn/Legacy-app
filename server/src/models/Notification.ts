@@ -7,9 +7,10 @@ export interface INotification extends Document {
     _id: mongoose.Types.ObjectId;
     userId: mongoose.Types.ObjectId;
     message: string;
-    type: 'task_assigned' | 'task_updated' | 'task_completed' | 'comment_added' | 'general';
+    type: 'task_assigned' | 'task_updated' | 'task_completed' | 'task_deleted' | 'project_created' | 'comment_added' | 'general';
     read: boolean;
     relatedTaskId?: mongoose.Types.ObjectId;
+    relatedProjectId?: mongoose.Types.ObjectId;
     createdAt: Date;
     updatedAt: Date;
 }
@@ -32,7 +33,7 @@ const NotificationSchema = new Schema<INotification>(
         },
         type: {
             type: String,
-            enum: ['task_assigned', 'task_updated', 'task_completed', 'comment_added', 'general'],
+            enum: ['task_assigned', 'task_updated', 'task_completed', 'task_deleted', 'project_created', 'comment_added', 'general'],
             default: 'general',
         },
         read: {
@@ -42,6 +43,11 @@ const NotificationSchema = new Schema<INotification>(
         relatedTaskId: {
             type: Schema.Types.ObjectId,
             ref: 'Task',
+            default: null,
+        },
+        relatedProjectId: {
+            type: Schema.Types.ObjectId,
+            ref: 'Project',
             default: null,
         },
     },

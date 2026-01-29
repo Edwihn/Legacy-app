@@ -168,9 +168,13 @@ export const updateTask = async (
     res: Response
 ): Promise<void> => {
     try {
+        console.log('UpdateTask llamado en el backend para ID:', req.params.id);
+        console.log('Datos recibidos:', req.body);
+
         let task = await Task.findById(req.params.id);
 
         if (!task) {
+            console.log('Tarea no encontrada');
             res.status(404).json({
                 success: false,
                 message: 'Tarea no encontrada',
@@ -205,24 +209,38 @@ export const updateTask = async (
                 },
             });
 
-            // Notificar cambio de estado
-            if (oldTask.assignedTo && oldTask.assignedTo.toString() !== req.user!._id.toString()) {
-                await Notification.create({
-                    userId: oldTask.assignedTo,
-                    message: `Estado de "${task.title}" cambió de ${oldTask.status} a ${updates.status}`,
-                    type: 'task_updated',
-                    relatedTaskId: task._id,
-                });
+            // Notificar cambio de estado (Permitir auto-notificación para pruebas)
+            if (oldTask.assignedTo) {
+                console.log(`Intentando crear notificación de STATUS_CHANGED para ${oldTask.assignedTo}`);
+                console.log(`Usuario actual (req.user._id): ${req.user!._id}`);
+
+                try {
+                    const notif = await Notification.create({
+                        userId: oldTask.assignedTo,
+                        message: `Estado de "${task.title}" cambió de ${oldTask.status} a ${updates.status}`,
+                        type: 'task_updated',
+                        relatedTaskId: task._id,
+                    });
+                    console.log('Notificación CREADA EXITOSAMENTE:', notif._id);
+                } catch (notifError) {
+                    console.error('ERROR AL CREAR NOTIFICACIÓN:', notifError);
+                }
+            } else {
+                console.log('No se creó notificación: oldTask.assignedTo es null/undefined');
             }
 
             // Si se completó, notificar al creador
-            if (updates.status === 'Completada' && oldTask.createdBy.toString() !== req.user!._id.toString()) {
-                await Notification.create({
-                    userId: oldTask.createdBy,
-                    message: `Tarea "${task.title}" fue completada`,
-                    type: 'task_completed',
-                    relatedTaskId: task._id,
-                });
+            if (updates.status === 'Completada') {
+                console.log(`Intentando crear notificación COMPLETED para ${oldTask.createdBy}`);
+                try {
+                    await Notification.create({
+                        userId: oldTask.createdBy,
+                        message: `Tarea "${task.title}" fue completada`,
+                        type: 'task_completed',
+                        relatedTaskId: task._id,
+                    });
+                    console.log('Notificación COMPLETED CREADA');
+                } catch (e) { console.error('Error notif completed:', e); }
             }
         }
 
@@ -261,8 +279,9 @@ export const updateTask = async (
                 },
             });
 
-            // Crear notificación para el nuevo asignado
-            if (newAssignedTo && newAssignedTo !== req.user!._id.toString()) {
+            // Crear notificación para el nuevo asignado (Permitir auto-notificación)
+            if (newAssignedTo) {
+                console.log(`Creating notification for ASSIGNED to user ${newAssignedTo}`);
                 await Notification.create({
                     userId: newAssignedTo,
                     message: `Te asignaron la tarea: "${updates.title || task.title}"`,
@@ -272,6 +291,7 @@ export const updateTask = async (
             }
         } else if (updates.hasOwnProperty('assignedTo') && !newAssignedTo && oldAssignedTo) {
             // Notificar cuando se desasigna una tarea
+            console.log(`Creating notification for UNASSIGNED to user ${oldAssignedTo}`);
             await Notification.create({
                 userId: oldAssignedTo,
                 message: `Fuiste desasignado de la tarea: "${task.title}"`,
@@ -283,7 +303,8 @@ export const updateTask = async (
         // Notificar otros cambios importantes
         if ((updates.priority && updates.priority !== oldTask.priority) ||
             (updates.dueDate && updates.dueDate !== oldTask.dueDate)) {
-            if (oldTask.assignedTo && oldTask.assignedTo.toString() !== req.user!._id.toString()) {
+            if (oldTask.assignedTo) {
+                console.log(`Creating notification for UPDATED to user ${oldTask.assignedTo}`);
                 await Notification.create({
                     userId: oldTask.assignedTo,
                     message: `La tarea "${task.title}" fue actualizada`,

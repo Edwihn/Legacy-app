@@ -25,10 +25,12 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 
     const loadUnreadCount = async () => {
         try {
+            console.log('Cargando notificaciones no leídas...');
             const count = await notificationService.getUnreadCount();
+            console.log('Notificaciones no leídas:', count);
             setUnreadCount(count);
         } catch (error) {
-            // Silenciar errores de notificaciones
+            console.error('Error cargando notificaciones:', error);
         }
     };
 
