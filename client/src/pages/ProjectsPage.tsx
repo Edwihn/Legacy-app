@@ -24,7 +24,7 @@ const ProjectsPage: React.FC = () => {
             const data = await projectService.getProjects();
             setProjects(data);
         } catch (error: any) {
-            toast.error('Error al cargar proyectos');
+            toast.error('Error loading projects');
         } finally {
             setLoading(false);
         }
@@ -36,16 +36,16 @@ const ProjectsPage: React.FC = () => {
         try {
             if (selectedProject) {
                 await projectService.updateProject(selectedProject._id, formData);
-                toast.success('Proyecto actualizado correctamente');
+                toast.success('Project updated successfully');
             } else {
                 await projectService.createProject(formData);
-                toast.success('Proyecto creado correctamente');
+                toast.success('Project created successfully');
             }
             resetForm();
             loadProjects();
             setIsFormOpen(false);
         } catch (error: any) {
-            toast.error(error.response?.data?.message || 'Error al guardar proyecto');
+            toast.error(error.response?.data?.message || 'Error saving project');
         }
     };
 
@@ -59,14 +59,14 @@ const ProjectsPage: React.FC = () => {
     };
 
     const handleDelete = async (id: string) => {
-        if (!window.confirm('¿Estás seguro de eliminar este proyecto?')) return;
+        if (!window.confirm('Are you sure you want to delete this project?')) return;
 
         try {
             await projectService.deleteProject(id);
-            toast.success('Proyecto eliminado correctamente');
+            toast.success('Project deleted successfully');
             loadProjects();
         } catch (error: any) {
-            toast.error('Error al eliminar proyecto');
+            toast.error('Error deleting project');
         }
     };
 
@@ -82,7 +82,7 @@ const ProjectsPage: React.FC = () => {
         <Layout>
             <div>
                 <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-3xl font-bold text-gray-900">Gestión de Proyectos</h1>
+                    <h1 className="text-3xl font-bold text-gray-900">Project Management</h1>
                     <button
                         onClick={() => {
                             resetForm();
@@ -90,7 +90,7 @@ const ProjectsPage: React.FC = () => {
                         }}
                         className="btn-primary"
                     >
-                        + Nuevo Proyecto
+                        + New Project
                     </button>
                 </div>
 
@@ -100,7 +100,7 @@ const ProjectsPage: React.FC = () => {
                         <div className="card max-w-lg w-full p-6">
                             <div className="flex justify-between items-center mb-4">
                                 <h2 className="text-2xl font-bold text-gray-900">
-                                    {selectedProject ? 'Editar Proyecto' : 'Nuevo Proyecto'}
+                                    {selectedProject ? 'Edit Project' : 'New Project'}
                                 </h2>
                                 <button
                                     onClick={() => {
@@ -118,7 +118,7 @@ const ProjectsPage: React.FC = () => {
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Nombre del Proyecto *
+                                        Project Name *
                                     </label>
                                     <input
                                         type="text"
@@ -131,14 +131,14 @@ const ProjectsPage: React.FC = () => {
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Descripción
+                                        Description
                                     </label>
                                     <textarea
                                         value={formData.description}
                                         onChange={(e) => setFormData({ ...formData, description: e.target.value })}
                                         className="input-field"
                                         rows={4}
-                                        placeholder="Describe el proyecto..."
+                                        placeholder="Describe the project..."
                                     />
                                 </div>
 
@@ -151,10 +151,10 @@ const ProjectsPage: React.FC = () => {
                                         }}
                                         className="btn-secondary"
                                     >
-                                        Cancelar
+                                        Cancel
                                     </button>
                                     <button type="submit" className="btn-primary">
-                                        {selectedProject ? 'Actualizar' : 'Crear'} Proyecto
+                                        {selectedProject ? 'Update' : 'Create'} Project
                                     </button>
                                 </div>
                             </form>
@@ -174,8 +174,8 @@ const ProjectsPage: React.FC = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
                             </svg>
                         </div>
-                        <p className="text-gray-600 text-lg">No hay proyectos creados</p>
-                        <p className="text-gray-500 text-sm mt-2">Crea tu primer proyecto haciendo clic en "Nuevo Proyecto"</p>
+                        <p className="text-gray-600 text-lg">No projects found</p>
+                        <p className="text-gray-500 text-sm mt-2">Create your first project by clicking "New Project"</p>
                     </div>
                 ) : (
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
@@ -187,7 +187,7 @@ const ProjectsPage: React.FC = () => {
                                             {project.name}
                                         </h3>
                                         <p className="text-sm text-gray-600 line-clamp-3">
-                                            {project.description || 'Sin descripción'}
+                                            {project.description || 'No description'}
                                         </p>
                                     </div>
                                     <div className="p-2 bg-blue-100 rounded-lg">
@@ -198,7 +198,7 @@ const ProjectsPage: React.FC = () => {
                                 </div>
 
                                 <div className="text-xs text-gray-500 mb-4">
-                                    Creado: {new Date(project.createdAt).toLocaleDateString()}
+                                    Created: {new Date(project.createdAt).toLocaleDateString()}
                                 </div>
 
                                 <div className="flex space-x-2 pt-4 border-t border-gray-200">
@@ -206,13 +206,13 @@ const ProjectsPage: React.FC = () => {
                                         onClick={() => handleEdit(project)}
                                         className="flex-1 px-3 py-2 text-sm bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors font-medium"
                                     >
-                                        Editar
+                                        Edit
                                     </button>
                                     <button
                                         onClick={() => handleDelete(project._id)}
                                         className="flex-1 px-3 py-2 text-sm bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors font-medium"
                                     >
-                                        Eliminar
+                                        Delete
                                     </button>
                                 </div>
                             </div>

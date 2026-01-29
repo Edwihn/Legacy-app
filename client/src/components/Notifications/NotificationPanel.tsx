@@ -20,7 +20,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
             const data = await notificationService.getNotifications();
             setNotifications(data);
         } catch (error: any) {
-            toast.error('Error al cargar notificaciones');
+            toast.error('Error loading notifications');
         } finally {
             setLoading(false);
         }
@@ -32,9 +32,9 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
             setNotifications(notifications.map(n =>
                 n._id === id ? { ...n, read: true } : n
             ));
-            toast.success('Marcada como leída');
+            toast.success('Marked as read');
         } catch (error: any) {
-            toast.error('Error al marcar como leída');
+            toast.error('Error marking as read');
         }
     };
 
@@ -42,9 +42,9 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
         try {
             await notificationService.markAllAsRead();
             setNotifications(notifications.map(n => ({ ...n, read: true })));
-            toast.success('Todas marcadas como leídas');
+            toast.success('All marked as read');
         } catch (error: any) {
-            toast.error('Error al marcar todas como leídas');
+            toast.error('Error marking all as read');
         }
     };
 
@@ -52,9 +52,9 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
         try {
             await notificationService.deleteNotification(id);
             setNotifications(notifications.filter(n => n._id !== id));
-            toast.success('Notificación eliminada');
+            toast.success('Notification deleted');
         } catch (error: any) {
-            toast.error('Error al eliminar notificación');
+            toast.error('Error deleting notification');
         }
     };
 
@@ -90,11 +90,11 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
         const hours = Math.floor(diff / 3600000);
         const days = Math.floor(diff / 86400000);
 
-        if (minutes < 1) return 'Ahora mismo';
-        if (minutes < 60) return `Hace ${minutes} min`;
-        if (hours < 24) return `Hace ${hours} h`;
-        if (days < 7) return `Hace ${days} días`;
-        return date.toLocaleDateString('es-ES', { month: 'short', day: 'numeric' });
+        if (minutes < 1) return 'Just now';
+        if (minutes < 60) return `${minutes}m ago`;
+        if (hours < 24) return `${hours}h ago`;
+        if (days < 7) return `${days}d ago`;
+        return date.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     };
 
     const unreadCount = notifications.filter(n => !n.read).length;
@@ -105,11 +105,11 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
                 <div className="flex justify-between items-center mb-4">
                     <div>
                         <h2 className="text-2xl font-bold text-gray-900">
-                            🔔 Notificaciones
+                            🔔 Notifications
                         </h2>
                         {unreadCount > 0 && (
                             <p className="text-sm text-gray-600 mt-1">
-                                {unreadCount} sin leer
+                                {unreadCount} unread
                             </p>
                         )}
                     </div>
@@ -129,7 +129,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
                             onClick={handleMarkAllAsRead}
                             className="text-sm text-blue-600 hover:text-blue-800 font-medium"
                         >
-                            Marcar todas como leídas
+                            Mark all as read
                         </button>
                     </div>
                 )}
@@ -146,8 +146,8 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                                 </svg>
                             </div>
-                            <p className="text-gray-600">No tienes notificaciones</p>
-                            <p className="text-gray-500 text-sm mt-2">Te avisaremos cuando haya novedades</p>
+                            <p className="text-gray-600">You have no notifications</p>
+                            <p className="text-gray-500 text-sm mt-2">We'll notify you when there are updates</p>
                         </div>
                     ) : (
                         <div className="space-y-3">
@@ -174,7 +174,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
                                                 <button
                                                     onClick={() => handleMarkAsRead(notification._id)}
                                                     className="text-blue-600 hover:text-blue-800 text-xs font-medium"
-                                                    title="Marcar como leída"
+                                                    title="Mark as read"
                                                 >
                                                     ✓
                                                 </button>
@@ -182,7 +182,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
                                             <button
                                                 onClick={() => handleDelete(notification._id)}
                                                 className="text-red-600 hover:text-red-800 text-xs"
-                                                title="Eliminar"
+                                                title="Delete"
                                             >
                                                 ✕
                                             </button>
@@ -196,7 +196,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
 
                 <div className="mt-4 pt-4 border-t border-gray-200">
                     <button onClick={onClose} className="btn-secondary w-full">
-                        Cerrar
+                        Close
                     </button>
                 </div>
             </div>

@@ -3,6 +3,27 @@ import Layout from '../components/Layout/Layout';
 import { reportService, DashboardStats, ProjectStats } from '../services/reportService';
 import toast from 'react-hot-toast';
 
+const translateStatus = (status: string) => {
+    const map: Record<string, string> = {
+        'Pendiente': 'Pending',
+        'En Progreso': 'In Progress',
+        'Completada': 'Completed',
+        'Bloqueada': 'Blocked',
+        'Cancelada': 'Cancelled'
+    };
+    return map[status] || status;
+};
+
+const translatePriority = (priority: string) => {
+    const map: Record<string, string> = {
+        'Baja': 'Low',
+        'Media': 'Medium',
+        'Alta': 'High',
+        'Crítica': 'Critical'
+    };
+    return map[priority] || priority;
+};
+
 const ReportsPage: React.FC = () => {
     const [taskStats, setTaskStats] = useState<DashboardStats | null>(null);
     const [projectStats, setProjectStats] = useState<ProjectStats | null>(null);
@@ -22,7 +43,7 @@ const ReportsPage: React.FC = () => {
             setProjectStats(projectsData);
         } catch (error) {
             console.error(error);
-            toast.error('Error al cargar reportes');
+            toast.error('Error loading reports');
         } finally {
             setLoading(false);
         }
@@ -39,9 +60,9 @@ const ReportsPage: React.FC = () => {
             a.click();
             window.URL.revokeObjectURL(url);
             document.body.removeChild(a);
-            toast.success('Reporte descargado correctamente');
+            toast.success('Report downloaded successfully');
         } catch (error) {
-            toast.error('Error al descargar el CSV');
+            toast.error('Error downloading CSV');
         }
     };
 
@@ -59,7 +80,7 @@ const ReportsPage: React.FC = () => {
         <Layout>
             <div className="space-y-6">
                 <div className="flex justify-between items-center">
-                    <h1 className="text-3xl font-bold text-gray-900">Panel de Reportes</h1>
+                    <h1 className="text-3xl font-bold text-gray-900">Reports Panel</h1>
                     <button
                         onClick={handleExportCSV}
                         className="btn-secondary flex items-center"
@@ -67,20 +88,20 @@ const ReportsPage: React.FC = () => {
                         <svg className="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" />
                         </svg>
-                        Exportar a CSV
+                        Export to CSV
                     </button>
                 </div>
 
                 {/* Métricas Generales */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
                     <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                        <div className="text-gray-500 text-sm font-medium uppercase">Total Tareas</div>
+                        <div className="text-gray-500 text-sm font-medium uppercase">Total Tasks</div>
                         <div className="mt-2 flex items-baseline">
                             <span className="text-3xl font-bold text-gray-900">{taskStats?.total || 0}</span>
                         </div>
                     </div>
                     <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                        <div className="text-gray-500 text-sm font-medium uppercase">Completadas</div>
+                        <div className="text-gray-500 text-sm font-medium uppercase">Completed</div>
                         <div className="mt-2 flex items-baseline">
                             <span className="text-3xl font-bold text-green-600">{taskStats?.completed || 0}</span>
                             <span className="ml-2 text-sm text-gray-400">
@@ -89,13 +110,13 @@ const ReportsPage: React.FC = () => {
                         </div>
                     </div>
                     <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                        <div className="text-gray-500 text-sm font-medium uppercase">Pendientes</div>
+                        <div className="text-gray-500 text-sm font-medium uppercase">Pending</div>
                         <div className="mt-2 flex items-baseline">
                             <span className="text-3xl font-bold text-yellow-600">{taskStats?.pending || 0}</span>
                         </div>
                     </div>
                     <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                        <div className="text-gray-500 text-sm font-medium uppercase">Vencidas</div>
+                        <div className="text-gray-500 text-sm font-medium uppercase">Overdue</div>
                         <div className="mt-2 flex items-baseline">
                             <span className="text-3xl font-bold text-red-600">{taskStats?.overdue || 0}</span>
                         </div>
@@ -105,19 +126,19 @@ const ReportsPage: React.FC = () => {
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Gráfico de Barras: Estado */}
                     <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                        <h3 className="text-lg font-semibold text-gray-800 mb-4">Tareas por Estado</h3>
+                        <h3 className="text-lg font-semibold text-gray-800 mb-4">Tasks by Status</h3>
                         <div className="space-y-4">
                             {Object.entries(taskStats?.byStatus || {}).map(([status, count]) => (
                                 <div key={status}>
                                     <div className="flex justify-between text-sm mb-1">
-                                        <span className="font-medium text-gray-700">{status}</span>
+                                        <span className="font-medium text-gray-700">{translateStatus(status)}</span>
                                         <span className="text-gray-600">{count}</span>
                                     </div>
                                     <div className="w-full bg-gray-200 rounded-full h-2.5">
                                         <div
                                             className={`h-2.5 rounded-full ${status === 'Completada' ? 'bg-green-500' :
-                                                    status === 'En Progreso' ? 'bg-blue-500' :
-                                                        status === 'Pendiente' ? 'bg-yellow-400' : 'bg-gray-500'
+                                                status === 'En Progreso' ? 'bg-blue-500' :
+                                                    status === 'Pendiente' ? 'bg-yellow-400' : 'bg-gray-500'
                                                 }`}
                                             style={{ width: `${taskStats?.total ? (count / taskStats.total) * 100 : 0}%` }}
                                         ></div>
@@ -129,18 +150,18 @@ const ReportsPage: React.FC = () => {
 
                     {/* Gráfico de Barras: Prioridad */}
                     <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                        <h3 className="text-lg font-semibold text-gray-800 mb-4">Tareas por Prioridad</h3>
+                        <h3 className="text-lg font-semibold text-gray-800 mb-4">Tasks by Priority</h3>
                         <div className="space-y-4">
                             {Object.entries(taskStats?.byPriority || {}).map(([priority, count]) => (
                                 <div key={priority}>
                                     <div className="flex justify-between text-sm mb-1">
-                                        <span className="font-medium text-gray-700">{priority}</span>
+                                        <span className="font-medium text-gray-700">{translatePriority(priority)}</span>
                                         <span className="text-gray-600">{count}</span>
                                     </div>
                                     <div className="w-full bg-gray-200 rounded-full h-2.5">
                                         <div
                                             className={`h-2.5 rounded-full ${priority === 'Alta' || priority === 'Crítica' ? 'bg-red-500' :
-                                                    priority === 'Media' ? 'bg-yellow-500' : 'bg-blue-400'
+                                                priority === 'Media' ? 'bg-yellow-500' : 'bg-blue-400'
                                                 }`}
                                             style={{ width: `${taskStats?.total ? (count / taskStats.total) * 100 : 0}%` }}
                                         ></div>
@@ -154,16 +175,16 @@ const ReportsPage: React.FC = () => {
                 {/* Tabla de Progreso de Proyectos */}
                 <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
                     <div className="px-6 py-4 border-b border-gray-200">
-                        <h3 className="text-lg font-semibold text-gray-800">Progreso por Proyecto</h3>
+                        <h3 className="text-lg font-semibold text-gray-800">Progress by Project</h3>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-gray-200">
                             <thead className="bg-gray-50">
                                 <tr>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Proyecto</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Tareas</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Progreso</th>
-                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pendientes</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Project</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Tasks</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Progress</th>
+                                    <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pending</th>
                                 </tr>
                             </thead>
                             <tbody className="bg-white divide-y divide-gray-200">

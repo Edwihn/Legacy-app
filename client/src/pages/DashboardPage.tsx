@@ -50,7 +50,7 @@ const DashboardPage: React.FC = () => {
             <div>
                 <header className="mb-8">
                     <h1 className="text-4xl font-bold text-gray-900">Dashboard</h1>
-                    <p className="text-gray-600 mt-2">Resumen general del sistema</p>
+                    <p className="text-gray-600 mt-2">General system overview</p>
                 </header>
 
                 {loading ? (
@@ -80,7 +80,7 @@ const DashboardPage: React.FC = () => {
                                     </div>
                                     <div className="ml-4">
                                         <p className="text-sm font-medium text-gray-600">
-                                            Tareas Totales
+                                            Total Tasks
                                         </p>
                                         <p className="text-2xl font-bold text-gray-900">
                                             {stats.total}
@@ -111,7 +111,7 @@ const DashboardPage: React.FC = () => {
                                     </div>
                                     <div className="ml-4">
                                         <p className="text-sm font-medium text-gray-600">
-                                            Completadas
+                                            Completed
                                         </p>
                                         <p className="text-2xl font-bold text-gray-900">
                                             {stats.completed}
@@ -142,7 +142,7 @@ const DashboardPage: React.FC = () => {
                                     </div>
                                     <div className="ml-4">
                                         <p className="text-sm font-medium text-gray-600">
-                                            En Progreso
+                                            In Progress
                                         </p>
                                         <p className="text-2xl font-bold text-gray-900">
                                             {stats.inProgress}
@@ -173,7 +173,7 @@ const DashboardPage: React.FC = () => {
                                     </div>
                                     <div className="ml-4">
                                         <p className="text-sm font-medium text-gray-600">
-                                            Vencidas
+                                            Overdue
                                         </p>
                                         <p className="text-2xl font-bold text-gray-900">
                                             {stats.overdue}
@@ -186,10 +186,10 @@ const DashboardPage: React.FC = () => {
                         {/* Tarjeta Informativa */}
                         <div className="card p-8">
                             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                                🚀 Bienvenido al Task Manager MERN
+                                🚀 Welcome to the MERN Task Manager
                             </h2>
                             <p className="text-gray-600 mb-4">
-                                Sistema profesional de gestión de tareas refactorizado con arquitectura moderna:
+                                Professional task management system refactored with modern architecture:
                             </p>
                             <ul className="space-y-2 text-gray-700">
                                 <li className="flex items-center">
@@ -198,7 +198,7 @@ const DashboardPage: React.FC = () => {
                                 </li>
                                 <li className="flex items-center">
                                     <span className="text-green-500 mr-2">✓</span>
-                                    <strong>Base de Datos:</strong>&nbsp;MongoDB Atlas con Mongoose
+                                    <strong>Database:</strong>&nbsp;MongoDB Atlas with Mongoose
                                 </li>
                                 <li className="flex items-center">
                                     <span className="text-green-500 mr-2">✓</span>
@@ -206,24 +206,24 @@ const DashboardPage: React.FC = () => {
                                 </li>
                                 <li className="flex items-center">
                                     <span className="text-green-500 mr-2">✓</span>
-                                    <strong>Estilos:</strong>&nbsp;TailwindCSS con diseño moderno
+                                    <strong>Styles:</strong>&nbsp;TailwindCSS with modern design
                                 </li>
                                 <li className="flex items-center">
                                     <span className="text-green-500 mr-2">✓</span>
-                                    <strong>Arquitectura:</strong>&nbsp;Patrón MVC escalable
+                                    <strong>Architecture:</strong>&nbsp;Scalable MVC pattern
                                 </li>
                                 <li className="flex items-center">
                                     <span className="text-green-500 mr-2">✓</span>
-                                    <strong>Autenticación:</strong>&nbsp;JWT + bcrypt
+                                    <strong>Authentication:</strong>&nbsp;JWT + bcrypt
                                 </li>
                             </ul>
 
                             <div className="mt-8 flex flex-wrap gap-4">
                                 <a href="/tasks" className="btn-primary">
-                                    📝 Gestionar Tareas
+                                    📝 Manage Tasks
                                 </a>
                                 <a href="/projects" className="btn-secondary">
-                                    📁 Gestionar Proyectos
+                                    📁 Manage Projects
                                 </a>
                             </div>
                         </div>
@@ -232,12 +232,12 @@ const DashboardPage: React.FC = () => {
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
                             <div className="card p-6">
                                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                                    Distribución por Estado
+                                    Status Distribution
                                 </h3>
                                 <div className="space-y-3">
                                     <div>
                                         <div className="flex justify-between items-center mb-1">
-                                            <span className="text-sm text-gray-600">Pendientes</span>
+                                            <span className="text-sm text-gray-600">Pending</span>
                                             <span className="text-sm font-semibold text-gray-900">
                                                 {stats.pending}
                                             </span>
@@ -258,7 +258,7 @@ const DashboardPage: React.FC = () => {
                                     <div>
                                         <div className="flex justify-between items-center mb-1">
                                             <span className="text-sm text-gray-600">
-                                                En Progreso
+                                                In Progress
                                             </span>
                                             <span className="text-sm font-semibold text-gray-900">
                                                 {stats.inProgress}
@@ -280,7 +280,7 @@ const DashboardPage: React.FC = () => {
                                     <div>
                                         <div className="flex justify-between items-center mb-1">
                                             <span className="text-sm text-gray-600">
-                                                Completadas
+                                                Completed
                                             </span>
                                             <span className="text-sm font-semibold text-gray-900">
                                                 {stats.completed}
@@ -303,12 +303,12 @@ const DashboardPage: React.FC = () => {
 
                             <div className="card p-6">
                                 <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                                    Resumen Rápido
+                                    Quick Summary
                                 </h3>
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
                                         <span className="text-sm font-medium text-gray-700">
-                                            Tasa de Completitud
+                                            Completion Rate
                                         </span>
                                         <span className="text-lg font-bold text-blue-600">
                                             {stats.total > 0
@@ -320,7 +320,7 @@ const DashboardPage: React.FC = () => {
 
                                     <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
                                         <span className="text-sm font-medium text-gray-700">
-                                            Tareas Activas
+                                            Active Tasks
                                         </span>
                                         <span className="text-lg font-bold text-yellow-600">
                                             {stats.pending + stats.inProgress}
@@ -330,10 +330,10 @@ const DashboardPage: React.FC = () => {
                                     {stats.overdue > 0 && (
                                         <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
                                             <span className="text-sm font-medium text-gray-700">
-                                                ⚠️ Atención Requerida
+                                                ⚠️ Attention Required
                                             </span>
                                             <span className="text-lg font-bold text-red-600">
-                                                {stats.overdue} vencidas
+                                                {stats.overdue} overdue
                                             </span>
                                         </div>
                                     )}

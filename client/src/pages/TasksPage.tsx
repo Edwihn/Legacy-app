@@ -7,6 +7,27 @@ import HistoryViewer from '../components/Tasks/HistoryViewer';
 
 import { authService } from '../services/authService';
 
+const translateStatus = (status: string) => {
+    const map: Record<string, string> = {
+        'Pendiente': 'Pending',
+        'En Progreso': 'In Progress',
+        'Completada': 'Completed',
+        'Bloqueada': 'Blocked',
+        'Cancelada': 'Cancelled'
+    };
+    return map[status] || status;
+};
+
+const translatePriority = (priority: string) => {
+    const map: Record<string, string> = {
+        'Baja': 'Low',
+        'Media': 'Medium',
+        'Alta': 'High',
+        'Crítica': 'Critical'
+    };
+    return map[priority] || priority;
+};
+
 const TasksPage: React.FC = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [projects, setProjects] = useState<Project[]>([]);
@@ -55,7 +76,7 @@ const TasksPage: React.FC = () => {
             const data = await taskService.getTasks(activeFilters);
             setTasks(data);
         } catch (error: any) {
-            toast.error('Error al cargar tareas');
+            toast.error('Error loading tasks');
         } finally {
             setLoading(false);
         }
@@ -66,7 +87,7 @@ const TasksPage: React.FC = () => {
             const data = await authService.getUsers();
             setUsers(data);
         } catch (error: any) {
-            console.error('Error cargando usuarios', error);
+            console.error('Error loading users', error);
         }
     };
 
@@ -75,7 +96,7 @@ const TasksPage: React.FC = () => {
             const data = await projectService.getProjects();
             setProjects(data);
         } catch (error: any) {
-            toast.error('Error al cargar proyectos');
+            toast.error('Error loading projects');
         }
     };
 
@@ -83,21 +104,21 @@ const TasksPage: React.FC = () => {
         e.preventDefault();
 
         try {
-            console.log('Guardando tarea...', { selectedTask, formData });
+            console.log('Saving task...', { selectedTask, formData });
 
             if (selectedTask) {
                 await taskService.updateTask(selectedTask._id, formData);
-                toast.success('Tarea actualizada correctamente');
+                toast.success('Task updated successfully');
             } else {
                 await taskService.createTask(formData);
-                toast.success('Tarea creada correctamente');
+                toast.success('Task created successfully');
             }
             resetForm();
             loadTasks();
             setIsFormOpen(false);
         } catch (error: any) {
-            console.error('Error al guardar tarea:', error);
-            const errorMessage = error.response?.data?.message || error.message || 'Error al guardar tarea';
+            console.error('Error saving task:', error);
+            const errorMessage = error.response?.data?.message || error.message || 'Error saving task';
             toast.error(errorMessage);
         }
     };
@@ -138,14 +159,14 @@ const TasksPage: React.FC = () => {
     };
 
     const handleDelete = async (id: string) => {
-        if (!window.confirm('¿Estás seguro de eliminar esta tarea?')) return;
+        if (!window.confirm('Are you sure you want to delete this task?')) return;
 
         try {
             await taskService.deleteTask(id);
-            toast.success('Tarea eliminada correctamente');
+            toast.success('Task deleted successfully');
             loadTasks();
         } catch (error: any) {
-            toast.error('Error al eliminar tarea');
+            toast.error('Error deleting task');
         }
     };
 
@@ -188,7 +209,7 @@ const TasksPage: React.FC = () => {
         <Layout>
             <div>
                 <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-3xl font-bold text-gray-900">Gestión de Tareas</h1>
+                    <h1 className="text-3xl font-bold text-gray-900">Task Management</h1>
                     <button
                         onClick={() => {
                             resetForm();
@@ -196,7 +217,7 @@ const TasksPage: React.FC = () => {
                         }}
                         className="btn-primary"
                     >
-                        + Nueva Tarea
+                        + New Task
                     </button>
                 </div>
 
@@ -207,7 +228,7 @@ const TasksPage: React.FC = () => {
                         <div className="lg:col-span-1">
                             <input
                                 type="text"
-                                placeholder="Buscar por título o desc..."
+                                placeholder="Search by title or desc..."
                                 value={filters.search}
                                 onChange={(e) => setFilters({ ...filters, search: e.target.value })}
                                 className="input-field"
@@ -221,12 +242,12 @@ const TasksPage: React.FC = () => {
                                 onChange={(e) => setFilters({ ...filters, status: e.target.value })}
                                 className="input-field"
                             >
-                                <option value="">Todos los Estados</option>
-                                <option value="Pendiente">Pendiente</option>
-                                <option value="En Progreso">En Progreso</option>
-                                <option value="Completada">Completada</option>
-                                <option value="Bloqueada">Bloqueada</option>
-                                <option value="Cancelada">Cancelada</option>
+                                <option value="">All Statuses</option>
+                                <option value="Pendiente">Pending</option>
+                                <option value="En Progreso">In Progress</option>
+                                <option value="Completada">Completed</option>
+                                <option value="Bloqueada">Blocked</option>
+                                <option value="Cancelada">Cancelled</option>
                             </select>
                         </div>
 
@@ -237,11 +258,11 @@ const TasksPage: React.FC = () => {
                                 onChange={(e) => setFilters({ ...filters, priority: e.target.value })}
                                 className="input-field"
                             >
-                                <option value="">Todas las Prioridades</option>
-                                <option value="Baja">Baja</option>
-                                <option value="Media">Media</option>
-                                <option value="Alta">Alta</option>
-                                <option value="Crítica">Crítica</option>
+                                <option value="">All Priorities</option>
+                                <option value="Baja">Low</option>
+                                <option value="Media">Medium</option>
+                                <option value="Alta">High</option>
+                                <option value="Crítica">Critical</option>
                             </select>
                         </div>
 
@@ -252,7 +273,7 @@ const TasksPage: React.FC = () => {
                                 onChange={(e) => setFilters({ ...filters, projectId: e.target.value })}
                                 className="input-field"
                             >
-                                <option value="">Todos los Proyectos</option>
+                                <option value="">All Projects</option>
                                 {projects.map(project => (
                                     <option key={project._id} value={project._id}>
                                         {project.name}
@@ -268,7 +289,7 @@ const TasksPage: React.FC = () => {
                                 onChange={(e) => setFilters({ ...filters, assignedTo: e.target.value })}
                                 className="input-field"
                             >
-                                <option value="">Todos los Usuarios</option>
+                                <option value="">All Users</option>
                                 {users.map(user => (
                                     <option key={user._id} value={user._id}>
                                         {user.username}
@@ -294,7 +315,7 @@ const TasksPage: React.FC = () => {
                                 <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
                                 </svg>
-                                Limpiar Filtros
+                                Clear Filters
                             </button>
                         </div>
                     )}
@@ -306,7 +327,7 @@ const TasksPage: React.FC = () => {
                         <div className="card max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
                             <div className="flex justify-between items-center mb-4">
                                 <h2 className="text-2xl font-bold text-gray-900">
-                                    {selectedTask ? 'Editar Tarea' : 'Nueva Tarea'}
+                                    {selectedTask ? 'Edit Task' : 'New Task'}
                                 </h2>
                                 <button
                                     onClick={() => {
@@ -324,7 +345,7 @@ const TasksPage: React.FC = () => {
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Título *
+                                        Title *
                                     </label>
                                     <input
                                         type="text"
@@ -337,7 +358,7 @@ const TasksPage: React.FC = () => {
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Descripción
+                                        Description
                                     </label>
                                     <textarea
                                         value={formData.description}
@@ -350,41 +371,41 @@ const TasksPage: React.FC = () => {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                                            Estado
+                                            Status
                                         </label>
                                         <select
                                             value={formData.status}
                                             onChange={(e) => setFormData({ ...formData, status: e.target.value as any })}
                                             className="input-field"
                                         >
-                                            <option value="Pendiente">Pendiente</option>
-                                            <option value="En Progreso">En Progreso</option>
-                                            <option value="Completada">Completada</option>
-                                            <option value="Bloqueada">Bloqueada</option>
-                                            <option value="Cancelada">Cancelada</option>
+                                            <option value="Pendiente">Pending</option>
+                                            <option value="En Progreso">In Progress</option>
+                                            <option value="Completada">Completed</option>
+                                            <option value="Bloqueada">Blocked</option>
+                                            <option value="Cancelada">Cancelled</option>
                                         </select>
                                     </div>
 
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                                            Prioridad
+                                            Priority
                                         </label>
                                         <select
                                             value={formData.priority}
                                             onChange={(e) => setFormData({ ...formData, priority: e.target.value as any })}
                                             className="input-field"
                                         >
-                                            <option value="Baja">Baja</option>
-                                            <option value="Media">Media</option>
-                                            <option value="Alta">Alta</option>
-                                            <option value="Crítica">Crítica</option>
+                                            <option value="Baja">Low</option>
+                                            <option value="Media">Medium</option>
+                                            <option value="Alta">High</option>
+                                            <option value="Crítica">Critical</option>
                                         </select>
                                     </div>
                                 </div>
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Proyecto *
+                                        Project *
                                     </label>
                                     <select
                                         value={formData.projectId}
@@ -392,7 +413,7 @@ const TasksPage: React.FC = () => {
                                         className="input-field"
                                         required
                                     >
-                                        <option value="">Seleccionar proyecto</option>
+                                        <option value="">Select project</option>
                                         {projects.map((project) => (
                                             <option key={project._id} value={project._id}>
                                                 {project.name}
@@ -403,14 +424,14 @@ const TasksPage: React.FC = () => {
 
                                 <div>
                                     <label className="block text-sm font-medium text-gray-700 mb-1">
-                                        Asignado a
+                                        Assigned To
                                     </label>
                                     <select
                                         value={formData.assignedTo}
                                         onChange={(e) => setFormData({ ...formData, assignedTo: e.target.value })}
                                         className="input-field"
                                     >
-                                        <option value="">Sin asignar</option>
+                                        <option value="">Unassigned</option>
                                         {users.map((user) => (
                                             <option key={user._id} value={user._id}>
                                                 {user.username}
@@ -422,7 +443,7 @@ const TasksPage: React.FC = () => {
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                                            Fecha de Vencimiento
+                                            Due Date
                                         </label>
                                         <input
                                             type="date"
@@ -434,7 +455,7 @@ const TasksPage: React.FC = () => {
 
                                     <div>
                                         <label className="block text-sm font-medium text-gray-700 mb-1">
-                                            Horas Estimadas
+                                            Estimated Hours
                                         </label>
                                         <input
                                             type="number"
@@ -456,10 +477,10 @@ const TasksPage: React.FC = () => {
                                         }}
                                         className="btn-secondary"
                                     >
-                                        Cancelar
+                                        Cancel
                                     </button>
                                     <button type="submit" className="btn-primary">
-                                        {selectedTask ? 'Actualizar' : 'Crear'} Tarea
+                                        {selectedTask ? 'Update' : 'Create'} Task
                                     </button>
                                 </div>
                             </form>
@@ -479,8 +500,8 @@ const TasksPage: React.FC = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                             </svg>
                         </div>
-                        <p className="text-gray-600 text-lg">No hay tareas creadas</p>
-                        <p className="text-gray-500 text-sm mt-2">Crea tu primera tarea haciendo clic en "Nueva Tarea"</p>
+                        <p className="text-gray-600 text-lg">No tasks found</p>
+                        <p className="text-gray-500 text-sm mt-2">Create your first task by clicking "New Task"</p>
                     </div>
                 ) : (
                     <div className="card overflow-hidden">
@@ -489,25 +510,25 @@ const TasksPage: React.FC = () => {
                                 <thead className="bg-gray-50">
                                     <tr>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Tarea
+                                            Task
                                         </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Estado
+                                            Status
                                         </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Prioridad
+                                            Priority
                                         </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Proyecto
+                                            Project
                                         </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Asignado a
+                                            Assigned To
                                         </th>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Vencimiento
+                                            Due Date
                                         </th>
                                         <th className="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
-                                            Acciones
+                                            Actions
                                         </th>
                                     </tr>
                                 </thead>
@@ -526,47 +547,47 @@ const TasksPage: React.FC = () => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <span className={`badge ${getStatusBadgeClass(task.status)}`}>
-                                                    {task.status}
+                                                    {translateStatus(task.status)}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap">
                                                 <span className={`badge ${getPriorityBadgeClass(task.priority)}`}>
-                                                    {task.priority}
+                                                    {translatePriority(task.priority)}
                                                 </span>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
-                                                {task.projectId?.name || 'Sin proyecto'}
+                                                {task.projectId?.name || 'No Project'}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                                                 <div className="flex items-center">
                                                     <div className="flex-shrink-0 h-6 w-6 rounded-full bg-indigo-100 flex items-center justify-center text-xs font-medium text-indigo-600 mr-2">
                                                         {(task.assignedTo?.username || '?').charAt(0).toUpperCase()}
                                                     </div>
-                                                    {task.assignedTo?.username || 'Sin asignar'}
+                                                    {task.assignedTo?.username || 'Unassigned'}
                                                 </div>
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                                {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'Sin fecha'}
+                                                {task.dueDate ? new Date(task.dueDate).toLocaleDateString() : 'No date'}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <button
                                                     onClick={() => setHistoryTaskId(task._id)}
                                                     className="text-purple-600 hover:text-purple-900 mr-3"
-                                                    title="Ver historial"
+                                                    title="View History"
                                                 >
-                                                    📜 Historial
+                                                    📜 History
                                                 </button>
                                                 <button
                                                     onClick={() => handleEdit(task)}
                                                     className="text-blue-600 hover:text-blue-900 mr-3"
                                                 >
-                                                    Editar
+                                                    Edit
                                                 </button>
                                                 <button
                                                     onClick={() => handleDelete(task._id)}
                                                     className="text-red-600 hover:text-red-900"
                                                 >
-                                                    Eliminar
+                                                    Delete
                                                 </button>
                                             </td>
                                         </tr>

@@ -21,7 +21,7 @@ const HistoryViewer: React.FC<HistoryViewerProps> = ({ taskId, onClose }) => {
             const data = await historyService.getTaskHistory(taskId);
             setHistory(data);
         } catch (error: any) {
-            toast.error('Error al cargar historial');
+            toast.error('Error loading history');
         } finally {
             setLoading(false);
         }
@@ -41,19 +41,19 @@ const HistoryViewer: React.FC<HistoryViewerProps> = ({ taskId, onClose }) => {
 
     const getActionText = (action: string) => {
         const texts: Record<string, string> = {
-            CREATED: 'Tarea creada',
-            UPDATED: 'Tarea actualizada',
-            STATUS_CHANGED: 'Estado cambiado',
-            ASSIGNED: 'Tarea asignada',
-            COMPLETED: 'Tarea completada',
-            DELETED: 'Tarea eliminada',
+            CREATED: 'Task created',
+            UPDATED: 'Task updated',
+            STATUS_CHANGED: 'Status changed',
+            ASSIGNED: 'Task assigned',
+            COMPLETED: 'Task completed',
+            DELETED: 'Task deleted',
         };
         return texts[action] || action;
     };
 
     const formatDate = (dateString: string) => {
         const date = new Date(dateString);
-        return date.toLocaleString('es-ES', {
+        return date.toLocaleString('en-US', {
             year: 'numeric',
             month: 'short',
             day: 'numeric',
@@ -92,7 +92,7 @@ const HistoryViewer: React.FC<HistoryViewerProps> = ({ taskId, onClose }) => {
             <div className="card max-w-2xl w-full max-h-[80vh] overflow-hidden p-6 flex flex-col">
                 <div className="flex justify-between items-center mb-4">
                     <h2 className="text-2xl font-bold text-gray-900">
-                        📜 Historial de Cambios
+                        📜 Change History
                     </h2>
                     <button
                         onClick={onClose}
@@ -116,11 +116,11 @@ const HistoryViewer: React.FC<HistoryViewerProps> = ({ taskId, onClose }) => {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
-                            <p className="text-gray-600">No hay historial disponible</p>
+                            <p className="text-gray-600">No history available</p>
                         </div>
                     ) : (
                         <div className="space-y-4">
-                            {history.map((entry, index) => (
+                            {history.map((entry) => (
                                 <div
                                     key={entry._id}
                                     className="relative pl-8 pb-4 border-l-2 border-gray-200 last:border-l-0"
@@ -137,7 +137,7 @@ const HistoryViewer: React.FC<HistoryViewerProps> = ({ taskId, onClose }) => {
                                                         {getActionText(entry.action)}
                                                     </p>
                                                     <p className="text-sm text-gray-600">
-                                                        por <span className="font-medium">{entry.userId?.username || 'Usuario desconocido'}</span>
+                                                        by <span className="font-medium">{entry.userId?.username || 'Unknown user'}</span>
                                                     </p>
                                                 </div>
                                             </div>
@@ -160,7 +160,7 @@ const HistoryViewer: React.FC<HistoryViewerProps> = ({ taskId, onClose }) => {
 
                 <div className="mt-4 pt-4 border-t border-gray-200">
                     <button onClick={onClose} className="btn-secondary w-full">
-                        Cerrar
+                        Close
                     </button>
                 </div>
             </div>
