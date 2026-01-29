@@ -5,13 +5,25 @@ import toast from 'react-hot-toast';
 import Layout from '../components/Layout/Layout';
 import HistoryViewer from '../components/Tasks/HistoryViewer';
 
+import { authService } from '../services/authService';
+
 const TasksPage: React.FC = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
     const [projects, setProjects] = useState<Project[]>([]);
+    const [users, setUsers] = useState<any[]>([]);
     const [loading, setLoading] = useState(true);
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
     const [isFormOpen, setIsFormOpen] = useState(false);
     const [historyTaskId, setHistoryTaskId] = useState<string | null>(null);
+
+    // Search filters
+    const [filters, setFilters] = useState({
+        search: '',
+        status: '',
+        priority: '',
+        projectId: '',
+        assignedTo: '',
+    });
 
     // Form states
     const [formData, setFormData] = useState({
@@ -28,17 +40,33 @@ const TasksPage: React.FC = () => {
     useEffect(() => {
         loadTasks();
         loadProjects();
-    }, []);
+        loadUsers();
+    }, [filters]); // Recargar cuando cambien los filtros
 
     const loadTasks = async () => {
         try {
             setLoading(true);
-            const data = await taskService.getTasks();
+            // Convertir filtros vacíos a undefined para no enviarlos
+            const activeFilters: any = {};
+            Object.keys(filters).forEach(key => {
+                if ((filters as any)[key]) activeFilters[key] = (filters as any)[key];
+            });
+
+            const data = await taskService.getTasks(activeFilters);
             setTasks(data);
         } catch (error: any) {
             toast.error('Error al cargar tareas');
         } finally {
             setLoading(false);
+        }
+    };
+
+    const loadUsers = async () => {
+        try {
+            const data = await authService.getUsers();
+            setUsers(data);
+        } catch (error: any) {
+            console.error('Error cargando usuarios', error);
         }
     };
 
@@ -172,6 +200,106 @@ const TasksPage: React.FC = () => {
                     </button>
                 </div>
 
+                {/* Filtros Avanzados */}
+                <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-6">
+                    <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
+                        {/* Búsqueda por texto */}
+                        <div className="lg:col-span-1">
+                            <input
+                                type="text"
+                                placeholder="Buscar por título o desc..."
+                                value={filters.search}
+                                onChange={(e) => setFilters({ ...filters, search: e.target.value })}
+                                className="input-field"
+                            />
+                        </div>
+
+                        {/* Filtro Estado */}
+                        <div>
+                            <select
+                                value={filters.status}
+                                onChange={(e) => setFilters({ ...filters, status: e.target.value })}
+                                className="input-field"
+                            >
+                                <option value="">Todos los Estados</option>
+                                <option value="Pendiente">Pendiente</option>
+                                <option value="En Progreso">En Progreso</option>
+                                <option value="Completada">Completada</option>
+                                <option value="Bloqueada">Bloqueada</option>
+                                <option value="Cancelada">Cancelada</option>
+                            </select>
+                        </div>
+
+                        {/* Filtro Prioridad */}
+                        <div>
+                            <select
+                                value={filters.priority}
+                                onChange={(e) => setFilters({ ...filters, priority: e.target.value })}
+                                className="input-field"
+                            >
+                                <option value="">Todas las Prioridades</option>
+                                <option value="Baja">Baja</option>
+                                <option value="Media">Media</option>
+                                <option value="Alta">Alta</option>
+                                <option value="Crítica">Crítica</option>
+                            </select>
+                        </div>
+
+                        {/* Filtro Proyecto */}
+                        <div>
+                            <select
+                                value={filters.projectId}
+                                onChange={(e) => setFilters({ ...filters, projectId: e.target.value })}
+                                className="input-field"
+                            >
+                                <option value="">Todos los Proyectos</option>
+                                {projects.map(project => (
+                                    <option key={project._id} value={project._id}>
+                                        {project.name}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+
+                        {/* Filtro Asignado */}
+                        <div>
+                            <select
+                                value={filters.assignedTo}
+                                onChange={(e) => setFilters({ ...filters, assignedTo: e.target.value })}
+                                className="input-field"
+                            >
+                                <option value="">Todos los Usuarios</option>
+                                {users.map(user => (
+                                    <option key={user._id} value={user._id}>
+                                        {user.username}
+                                    </option>
+                                ))}
+                            </select>
+                        </div>
+                    </div>
+
+                    {/* Botón de limpiar si hay filtros activos */}
+                    {(filters.search || filters.status || filters.priority || filters.projectId || filters.assignedTo) && (
+                        <div className="mt-4 flex justify-end">
+                            <button
+                                onClick={() => setFilters({
+                                    search: '',
+                                    status: '',
+                                    priority: '',
+                                    projectId: '',
+                                    assignedTo: '',
+                                })}
+                                className="text-sm text-red-600 hover:text-red-800 flex items-center"
+                            >
+                                <svg className="w-4 h-4 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
+                                </svg>
+                                Limpiar Filtros
+                            </button>
+                        </div>
+                    )}
+                </div>
+
                 {/* Formulario Modal */}
                 {isFormOpen && (
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
@@ -268,6 +396,24 @@ const TasksPage: React.FC = () => {
                                         {projects.map((project) => (
                                             <option key={project._id} value={project._id}>
                                                 {project.name}
+                                            </option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div>
+                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        Asignado a
+                                    </label>
+                                    <select
+                                        value={formData.assignedTo}
+                                        onChange={(e) => setFormData({ ...formData, assignedTo: e.target.value })}
+                                        className="input-field"
+                                    >
+                                        <option value="">Sin asignar</option>
+                                        {users.map((user) => (
+                                            <option key={user._id} value={user._id}>
+                                                {user.username}
                                             </option>
                                         ))}
                                     </select>

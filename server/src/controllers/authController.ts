@@ -159,3 +159,26 @@ export const getMe = async (req: Request, res: Response): Promise<void> => {
         });
     }
 };
+
+/**
+ * @desc    Obtener lista de usuarios
+ * @route   GET /api/auth/users
+ * @access  Private
+ */
+export const getUsers = async (req: Request, res: Response): Promise<void> => {
+    try {
+        const users = await User.find().select('_id username email role');
+
+        res.status(200).json({
+            success: true,
+            count: users.length,
+            data: users,
+        });
+    } catch (error: any) {
+        res.status(500).json({
+            success: false,
+            message: 'Error al obtener usuarios',
+            error: error.message,
+        });
+    }
+};

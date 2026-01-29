@@ -71,4 +71,12 @@ export const authService = {
     isAuthenticated: (): boolean => {
         return !!localStorage.getItem('token');
     },
+
+    /**
+     * Obtener lista de usuarios
+     */
+    getUsers: async (): Promise<any[]> => {
+        const response = await api.get('/auth/users');
+        return response.data.data;
+    },
 };

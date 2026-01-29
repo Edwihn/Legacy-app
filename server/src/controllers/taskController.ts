@@ -14,7 +14,7 @@ export const getTasks = async (
     res: Response
 ): Promise<void> => {
     try {
-        const { projectId, status, priority, assignedTo } = req.query;
+        const { projectId, status, priority, assignedTo, search } = req.query;
 
         // Construir filtro dinámico
         const filter: any = {};
@@ -22,6 +22,15 @@ export const getTasks = async (
         if (status) filter.status = status;
         if (priority) filter.priority = priority;
         if (assignedTo) filter.assignedTo = assignedTo;
+
+        // Búsqueda por texto (título o descripción)
+        if (search) {
+            const searchRegex = new RegExp(search as string, 'i');
+            filter.$or = [
+                { title: searchRegex },
+                { description: searchRegex }
+            ];
+        }
 
         const tasks = await Task.find(filter)
             .populate('projectId', 'name')
