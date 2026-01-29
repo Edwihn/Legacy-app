@@ -130,14 +130,28 @@ export const createTask = async (
             newValue: task.title,
         });
 
-        // Crear notificación si fue asignada a alguien
+        // Crear notificación si fue asignada a alguien (Permitir auto-notificación)
         if (assignedTo) {
-            await Notification.create({
-                userId: assignedTo,
-                message: `Nueva tarea asignada: ${task.title}`,
-                type: 'task_assigned',
-                relatedTaskId: task._id,
-            });
+            console.log(`Creando notificación NEW TASK para: ${assignedTo}`);
+            try {
+                await Notification.create({
+                    userId: assignedTo,
+                    message: `Nueva tarea asignada: ${task.title}`,
+                    type: 'task_assigned',
+                    relatedTaskId: task._id,
+                });
+            } catch (e) { console.error('Error notif create task:', e); }
+        } else {
+            // Opcional: Notificar al creador que se creó exitosamente (feedback)
+            console.log(`Creando notificación TASK CREATED para creador: ${req.user!._id}`);
+            try {
+                await Notification.create({
+                    userId: req.user!._id,
+                    message: `Tarea creada exitosamente: ${task.title}`,
+                    type: 'general',
+                    relatedTaskId: task._id,
+                });
+            } catch (e) { console.error('Error notif create task self:', e); }
         }
 
         const populatedTask = await Task.findById(task._id)
@@ -281,36 +295,44 @@ export const updateTask = async (
 
             // Crear notificación para el nuevo asignado (Permitir auto-notificación)
             if (newAssignedTo) {
-                console.log(`Creating notification for ASSIGNED to user ${newAssignedTo}`);
-                await Notification.create({
-                    userId: newAssignedTo,
-                    message: `Te asignaron la tarea: "${updates.title || task.title}"`,
-                    type: 'task_assigned',
-                    relatedTaskId: task._id,
-                });
+                console.log(`Creando notificación ASSIGNED para: ${newAssignedTo}`);
+                try {
+                    await Notification.create({
+                        userId: newAssignedTo,
+                        message: `Te asignaron la tarea: "${updates.title || task.title}"`,
+                        type: 'task_assigned',
+                        relatedTaskId: task._id,
+                    });
+                } catch (e) { console.error('Error notif assigned:', e); }
             }
         } else if (updates.hasOwnProperty('assignedTo') && !newAssignedTo && oldAssignedTo) {
             // Notificar cuando se desasigna una tarea
-            console.log(`Creating notification for UNASSIGNED to user ${oldAssignedTo}`);
-            await Notification.create({
-                userId: oldAssignedTo,
-                message: `Fuiste desasignado de la tarea: "${task.title}"`,
-                type: 'task_updated',
-                relatedTaskId: task._id,
-            });
+            console.log(`Creando notificación UNASSIGNED para: ${oldAssignedTo}`);
+            try {
+                await Notification.create({
+                    userId: oldAssignedTo,
+                    message: `Fuiste desasignado de la tarea: "${task.title}"`,
+                    type: 'task_updated',
+                    relatedTaskId: task._id,
+                });
+            } catch (e) { console.error('Error notif unassigned:', e); }
         }
 
         // Notificar otros cambios importantes
         if ((updates.priority && updates.priority !== oldTask.priority) ||
-            (updates.dueDate && updates.dueDate !== oldTask.dueDate)) {
+            (updates.dueDate && updates.dueDate !== oldTask.dueDate) ||
+            (updates.description && updates.description !== oldTask.description)) {
+
             if (oldTask.assignedTo) {
-                console.log(`Creating notification for UPDATED to user ${oldTask.assignedTo}`);
-                await Notification.create({
-                    userId: oldTask.assignedTo,
-                    message: `La tarea "${task.title}" fue actualizada`,
-                    type: 'task_updated',
-                    relatedTaskId: task._id,
-                });
+                console.log(`Creando notificación UPDATED para: ${oldTask.assignedTo}`);
+                try {
+                    await Notification.create({
+                        userId: oldTask.assignedTo,
+                        message: `La tarea "${task.title}" fue actualizada`,
+                        type: 'task_updated',
+                        relatedTaskId: task._id,
+                    });
+                } catch (e) { console.error('Error notif updated:', e); }
             }
         }
 
@@ -366,24 +388,30 @@ export const deleteTask = async (
             newValue: '',
         });
 
-        // Notificar al asignado si existe y no es quien la eliminó
-        if (task.assignedTo && task.assignedTo.toString() !== req.user!._id.toString()) {
-            await Notification.create({
-                userId: task.assignedTo,
-                message: `La tarea "${task.title}" fue eliminada`,
-                type: 'task_deleted',
-                relatedTaskId: task._id,
-            });
+        // Notificar al asignado si existe (Permitir auto-notificación)
+        if (task.assignedTo) {
+            console.log(`Creando notificación DELETE para asignado: ${task.assignedTo}`);
+            try {
+                await Notification.create({
+                    userId: task.assignedTo,
+                    message: `La tarea "${task.title}" fue eliminada`,
+                    type: 'task_deleted',
+                    relatedTaskId: task._id,
+                });
+            } catch (e) { console.error('Error notif delete assigned:', e); }
         }
 
-        // Notificar al creador si no es quien la eliminó
-        if (task.createdBy && task.createdBy.toString() !== req.user!._id.toString()) {
-            await Notification.create({
-                userId: task.createdBy,
-                message: `La tarea "${task.title}" fue eliminada`,
-                type: 'task_deleted',
-                relatedTaskId: task._id,
-            });
+        // Notificar al creador si existe (Permitir auto-notificación)
+        if (task.createdBy) {
+            console.log(`Creando notificación DELETE para creador: ${task.createdBy}`);
+            try {
+                await Notification.create({
+                    userId: task.createdBy,
+                    message: `La tarea "${task.title}" fue eliminada`,
+                    type: 'task_deleted',
+                    relatedTaskId: task._id,
+                });
+            } catch (e) { console.error('Error notif delete creator:', e); }
         }
 
         await task.deleteOne();

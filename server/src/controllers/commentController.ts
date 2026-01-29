@@ -1,6 +1,8 @@
 import { Response } from 'express';
 import { AuthRequest } from '../middleware/authMiddleware';
 import Comment from '../models/Comment';
+import Notification from '../models/Notification';
+import Task from '../models/Task';
 
 /**
  * @desc    Obtener comentarios de una tarea
@@ -60,6 +62,36 @@ export const createComment = async (
             'userId',
             'username'
         );
+
+        // Notificar a los involucrados en la tarea
+        try {
+            const task = await Task.findById(taskId);
+            if (task) {
+                // Notificar al asignado (si existe)
+                if (task.assignedTo) {
+                    console.log(`Creando notificación COMMENT para asignado: ${task.assignedTo}`);
+                    await Notification.create({
+                        userId: task.assignedTo,
+                        message: `Nuevo comentario en "${task.title}": ${commentText.substring(0, 30)}...`,
+                        type: 'comment_added',
+                        relatedTaskId: task._id,
+                    });
+                }
+
+                // Notificar al creador (si existe y es diferente del asignado para no duplicar)
+                if (task.createdBy && (!task.assignedTo || task.assignedTo.toString() !== task.createdBy.toString())) {
+                    console.log(`Creando notificación COMMENT para creador: ${task.createdBy}`);
+                    await Notification.create({
+                        userId: task.createdBy,
+                        message: `Nuevo comentario en "${task.title}": ${commentText.substring(0, 30)}...`,
+                        type: 'comment_added',
+                        relatedTaskId: task._id,
+                    });
+                }
+            }
+        } catch (error) {
+            console.error('Error al crear notificación de comentario:', error);
+        }
 
         res.status(201).json({
             success: true,
