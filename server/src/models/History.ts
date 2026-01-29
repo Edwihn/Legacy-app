@@ -10,6 +10,7 @@ export interface IHistory extends Document {
     action: 'CREATED' | 'STATUS_CHANGED' | 'TITLE_CHANGED' | 'ASSIGNED' | 'UPDATED' | 'DELETED';
     oldValue: string;
     newValue: string;
+    changes?: Record<string, any>;
     createdAt: Date;
 }
 
@@ -40,6 +41,10 @@ const HistorySchema = new Schema<IHistory>(
         newValue: {
             type: String,
             default: '',
+        },
+        changes: {
+            type: Schema.Types.Mixed,
+            default: {},
         },
     },
     {

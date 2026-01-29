@@ -3,6 +3,7 @@ import { taskService, Task } from '../services/taskService';
 import { projectService, Project } from '../services/projectService';
 import toast from 'react-hot-toast';
 import Layout from '../components/Layout/Layout';
+import HistoryViewer from '../components/Tasks/HistoryViewer';
 
 const TasksPage: React.FC = () => {
     const [tasks, setTasks] = useState<Task[]>([]);
@@ -10,6 +11,7 @@ const TasksPage: React.FC = () => {
     const [loading, setLoading] = useState(true);
     const [selectedTask, setSelectedTask] = useState<Task | null>(null);
     const [isFormOpen, setIsFormOpen] = useState(false);
+    const [historyTaskId, setHistoryTaskId] = useState<string | null>(null);
 
     // Form states
     const [formData, setFormData] = useState({
@@ -53,6 +55,8 @@ const TasksPage: React.FC = () => {
         e.preventDefault();
 
         try {
+            console.log('Guardando tarea...', { selectedTask, formData });
+
             if (selectedTask) {
                 await taskService.updateTask(selectedTask._id, formData);
                 toast.success('Tarea actualizada correctamente');
@@ -64,21 +68,43 @@ const TasksPage: React.FC = () => {
             loadTasks();
             setIsFormOpen(false);
         } catch (error: any) {
-            toast.error(error.response?.data?.message || 'Error al guardar tarea');
+            console.error('Error al guardar tarea:', error);
+            const errorMessage = error.response?.data?.message || error.message || 'Error al guardar tarea';
+            toast.error(errorMessage);
         }
     };
 
+
     const handleEdit = (task: Task) => {
         setSelectedTask(task);
+
+        // Manejar projectId - puede ser un objeto o un string
+        let projectIdValue = '';
+        if (typeof task.projectId === 'object' && task.projectId !== null) {
+            projectIdValue = task.projectId._id || '';
+        } else if (typeof task.projectId === 'string') {
+            projectIdValue = task.projectId;
+        }
+
+        // Manejar assignedTo - puede ser un objeto, string, o null
+        let assignedToValue = '';
+        if (task.assignedTo) {
+            if (typeof task.assignedTo === 'object' && task.assignedTo !== null) {
+                assignedToValue = task.assignedTo._id || '';
+            } else if (typeof task.assignedTo === 'string') {
+                assignedToValue = task.assignedTo;
+            }
+        }
+
         setFormData({
-            title: task.title,
-            description: task.description,
+            title: task.title || '',
+            description: task.description || '',
             status: task.status as any,
             priority: task.priority as any,
-            projectId: task.projectId?._id || task.projectId,
-            assignedTo: task.assignedTo?._id || task.assignedTo || '',
+            projectId: projectIdValue,
+            assignedTo: assignedToValue,
             dueDate: task.dueDate ? task.dueDate.split('T')[0] : '',
-            estimatedHours: task.estimatedHours,
+            estimatedHours: task.estimatedHours || 0,
         });
         setIsFormOpen(true);
     };
@@ -367,6 +393,13 @@ const TasksPage: React.FC = () => {
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                                                 <button
+                                                    onClick={() => setHistoryTaskId(task._id)}
+                                                    className="text-purple-600 hover:text-purple-900 mr-3"
+                                                    title="Ver historial"
+                                                >
+                                                    📜 Historial
+                                                </button>
+                                                <button
                                                     onClick={() => handleEdit(task)}
                                                     className="text-blue-600 hover:text-blue-900 mr-3"
                                                 >
@@ -387,6 +420,14 @@ const TasksPage: React.FC = () => {
                     </div>
                 )}
             </div>
+
+            {/* Modal de Historial */}
+            {historyTaskId && (
+                <HistoryViewer
+                    taskId={historyTaskId}
+                    onClose={() => setHistoryTaskId(null)}
+                />
+            )}
         </Layout>
     );
 };

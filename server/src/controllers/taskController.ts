@@ -114,7 +114,7 @@ export const createTask = async (
             status: status || 'Pendiente',
             priority: priority || 'Media',
             projectId,
-            assignedTo: assignedTo || null,
+            assignedTo: assignedTo && assignedTo !== '' ? assignedTo : null,
             createdBy: req.user!._id,
             dueDate: dueDate || null,
             estimatedHours: estimatedHours || 0,
@@ -181,6 +181,14 @@ export const updateTask = async (
         const oldTask = { ...task.toObject() };
         const updates = req.body;
 
+        // Limpiar datos: convertir strings vacíos en null para campos ObjectId
+        if (updates.assignedTo === '') {
+            updates.assignedTo = null;
+        }
+        if (updates.projectId === '') {
+            updates.projectId = null;
+        }
+
         // Registrar cambios en el historial
         if (updates.status && updates.status !== oldTask.status) {
             await History.create({
@@ -189,6 +197,12 @@ export const updateTask = async (
                 action: 'STATUS_CHANGED',
                 oldValue: oldTask.status,
                 newValue: updates.status,
+                changes: {
+                    status: {
+                        from: oldTask.status,
+                        to: updates.status,
+                    },
+                },
             });
         }
 
@@ -199,27 +213,46 @@ export const updateTask = async (
                 action: 'TITLE_CHANGED',
                 oldValue: oldTask.title,
                 newValue: updates.title,
+                changes: {
+                    title: {
+                        from: oldTask.title,
+                        to: updates.title,
+                    },
+                },
             });
         }
 
-        if (updates.assignedTo && updates.assignedTo !== oldTask.assignedTo?.toString()) {
+        // Mejorar manejo de assignedTo
+        const oldAssignedTo = oldTask.assignedTo ? oldTask.assignedTo.toString() : '';
+        const newAssignedTo = updates.assignedTo || '';
+
+        if (newAssignedTo && newAssignedTo !== oldAssignedTo) {
             await History.create({
                 taskId: task._id,
                 userId: req.user!._id,
                 action: 'ASSIGNED',
-                oldValue: oldTask.assignedTo?.toString() || '',
-                newValue: updates.assignedTo,
+                oldValue: oldAssignedTo,
+                newValue: newAssignedTo,
+                changes: {
+                    assignedTo: {
+                        from: oldAssignedTo,
+                        to: newAssignedTo,
+                    },
+                },
             });
 
-            // Crear notificación
-            await Notification.create({
-                userId: updates.assignedTo,
-                message: `Tarea actualizada: ${updates.title || task.title}`,
-                type: 'task_updated',
-                relatedTaskId: task._id,
-            });
+            // Crear notificación solo si es un usuario diferente
+            if (newAssignedTo) {
+                await Notification.create({
+                    userId: newAssignedTo,
+                    message: `Tarea actualizada: ${updates.title || task.title}`,
+                    type: 'task_updated',
+                    relatedTaskId: task._id,
+                });
+            }
         }
 
+        // Actualizar la tarea
         task = await Task.findByIdAndUpdate(req.params.id, updates, {
             new: true,
             runValidators: true,
@@ -233,6 +266,7 @@ export const updateTask = async (
             data: task,
         });
     } catch (error: any) {
+        console.error('Error al actualizar tarea:', error);
         res.status(500).json({
             success: false,
             message: 'Error al actualizar tarea',
