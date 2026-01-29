@@ -1,0 +1,350 @@
+import React, { useEffect, useState } from 'react';
+import { taskService } from '../services/taskService';
+import Layout from '../components/Layout/Layout';
+
+const DashboardPage: React.FC = () => {
+    const [stats, setStats] = useState({
+        total: 0,
+        completed: 0,
+        inProgress: 0,
+        pending: 0,
+        overdue: 0,
+    });
+    const [loading, setLoading] = useState(true);
+
+    useEffect(() => {
+        loadStats();
+    }, []);
+
+    const loadStats = async () => {
+        try {
+            const tasks = await taskService.getTasks();
+            const now = new Date();
+
+            const completed = tasks.filter((t) => t.status === 'Completada').length;
+            const inProgress = tasks.filter((t) => t.status === 'En Progreso').length;
+            const pending = tasks.filter((t) => t.status === 'Pendiente').length;
+            const overdue = tasks.filter(
+                (t) =>
+                    t.dueDate &&
+                    new Date(t.dueDate) < now &&
+                    t.status !== 'Completada'
+            ).length;
+
+            setStats({
+                total: tasks.length,
+                completed,
+                inProgress,
+                pending,
+                overdue,
+            });
+        } catch (error) {
+            console.error('Error al cargar estadísticas:', error);
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    return (
+        <Layout>
+            <div>
+                <header className="mb-8">
+                    <h1 className="text-4xl font-bold text-gray-900">Dashboard</h1>
+                    <p className="text-gray-600 mt-2">Resumen general del sistema</p>
+                </header>
+
+                {loading ? (
+                    <div className="flex justify-center items-center py-12">
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                    </div>
+                ) : (
+                    <>
+                        {/* Tarjetas de Estadísticas */}
+                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+                            <div className="card p-6 animate-fade-in">
+                                <div className="flex items-center">
+                                    <div className="p-3 bg-blue-100 rounded-lg">
+                                        <svg
+                                            className="w-6 h-6 text-blue-600"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                                            />
+                                        </svg>
+                                    </div>
+                                    <div className="ml-4">
+                                        <p className="text-sm font-medium text-gray-600">
+                                            Tareas Totales
+                                        </p>
+                                        <p className="text-2xl font-bold text-gray-900">
+                                            {stats.total}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                className="card p-6 animate-fade-in"
+                                style={{ animationDelay: '0.1s' }}
+                            >
+                                <div className="flex items-center">
+                                    <div className="p-3 bg-green-100 rounded-lg">
+                                        <svg
+                                            className="w-6 h-6 text-green-600"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M5 13l4 4L19 7"
+                                            />
+                                        </svg>
+                                    </div>
+                                    <div className="ml-4">
+                                        <p className="text-sm font-medium text-gray-600">
+                                            Completadas
+                                        </p>
+                                        <p className="text-2xl font-bold text-gray-900">
+                                            {stats.completed}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                className="card p-6 animate-fade-in"
+                                style={{ animationDelay: '0.2s' }}
+                            >
+                                <div className="flex items-center">
+                                    <div className="p-3 bg-yellow-100 rounded-lg">
+                                        <svg
+                                            className="w-6 h-6 text-yellow-600"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+                                            />
+                                        </svg>
+                                    </div>
+                                    <div className="ml-4">
+                                        <p className="text-sm font-medium text-gray-600">
+                                            En Progreso
+                                        </p>
+                                        <p className="text-2xl font-bold text-gray-900">
+                                            {stats.inProgress}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div
+                                className="card p-6 animate-fade-in"
+                                style={{ animationDelay: '0.3s' }}
+                            >
+                                <div className="flex items-center">
+                                    <div className="p-3 bg-red-100 rounded-lg">
+                                        <svg
+                                            className="w-6 h-6 text-red-600"
+                                            fill="none"
+                                            stroke="currentColor"
+                                            viewBox="0 0 24 24"
+                                        >
+                                            <path
+                                                strokeLinecap="round"
+                                                strokeLinejoin="round"
+                                                strokeWidth={2}
+                                                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                                            />
+                                        </svg>
+                                    </div>
+                                    <div className="ml-4">
+                                        <p className="text-sm font-medium text-gray-600">
+                                            Vencidas
+                                        </p>
+                                        <p className="text-2xl font-bold text-gray-900">
+                                            {stats.overdue}
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        {/* Tarjeta Informativa */}
+                        <div className="card p-8">
+                            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                                🚀 Bienvenido al Task Manager MERN
+                            </h2>
+                            <p className="text-gray-600 mb-4">
+                                Sistema profesional de gestión de tareas refactorizado con arquitectura moderna:
+                            </p>
+                            <ul className="space-y-2 text-gray-700">
+                                <li className="flex items-center">
+                                    <span className="text-green-500 mr-2">✓</span>
+                                    <strong>Backend:</strong>&nbsp;Node.js + Express + TypeScript
+                                </li>
+                                <li className="flex items-center">
+                                    <span className="text-green-500 mr-2">✓</span>
+                                    <strong>Base de Datos:</strong>&nbsp;MongoDB Atlas con Mongoose
+                                </li>
+                                <li className="flex items-center">
+                                    <span className="text-green-500 mr-2">✓</span>
+                                    <strong>Frontend:</strong>&nbsp;React + TypeScript + Vite
+                                </li>
+                                <li className="flex items-center">
+                                    <span className="text-green-500 mr-2">✓</span>
+                                    <strong>Estilos:</strong>&nbsp;TailwindCSS con diseño moderno
+                                </li>
+                                <li className="flex items-center">
+                                    <span className="text-green-500 mr-2">✓</span>
+                                    <strong>Arquitectura:</strong>&nbsp;Patrón MVC escalable
+                                </li>
+                                <li className="flex items-center">
+                                    <span className="text-green-500 mr-2">✓</span>
+                                    <strong>Autenticación:</strong>&nbsp;JWT + bcrypt
+                                </li>
+                            </ul>
+
+                            <div className="mt-8 flex flex-wrap gap-4">
+                                <a href="/tasks" className="btn-primary">
+                                    📝 Gestionar Tareas
+                                </a>
+                                <a href="/projects" className="btn-secondary">
+                                    📁 Gestionar Proyectos
+                                </a>
+                            </div>
+                        </div>
+
+                        {/* Estadísticas Adicionales */}
+                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
+                            <div className="card p-6">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                                    Distribución por Estado
+                                </h3>
+                                <div className="space-y-3">
+                                    <div>
+                                        <div className="flex justify-between items-center mb-1">
+                                            <span className="text-sm text-gray-600">Pendientes</span>
+                                            <span className="text-sm font-semibold text-gray-900">
+                                                {stats.pending}
+                                            </span>
+                                        </div>
+                                        <div className="w-full bg-gray-200 rounded-full h-2">
+                                            <div
+                                                className="bg-yellow-500 h-2 rounded-full transition-all"
+                                                style={{
+                                                    width: `${stats.total > 0
+                                                        ? (stats.pending / stats.total) * 100
+                                                        : 0
+                                                        }%`,
+                                                }}
+                                            ></div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div className="flex justify-between items-center mb-1">
+                                            <span className="text-sm text-gray-600">
+                                                En Progreso
+                                            </span>
+                                            <span className="text-sm font-semibold text-gray-900">
+                                                {stats.inProgress}
+                                            </span>
+                                        </div>
+                                        <div className="w-full bg-gray-200 rounded-full h-2">
+                                            <div
+                                                className="bg-blue-500 h-2 rounded-full transition-all"
+                                                style={{
+                                                    width: `${stats.total > 0
+                                                        ? (stats.inProgress / stats.total) * 100
+                                                        : 0
+                                                        }%`,
+                                                }}
+                                            ></div>
+                                        </div>
+                                    </div>
+
+                                    <div>
+                                        <div className="flex justify-between items-center mb-1">
+                                            <span className="text-sm text-gray-600">
+                                                Completadas
+                                            </span>
+                                            <span className="text-sm font-semibold text-gray-900">
+                                                {stats.completed}
+                                            </span>
+                                        </div>
+                                        <div className="w-full bg-gray-200 rounded-full h-2">
+                                            <div
+                                                className="bg-green-500 h-2 rounded-full transition-all"
+                                                style={{
+                                                    width: `${stats.total > 0
+                                                        ? (stats.completed / stats.total) * 100
+                                                        : 0
+                                                        }%`,
+                                                }}
+                                            ></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div className="card p-6">
+                                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                                    Resumen Rápido
+                                </h3>
+                                <div className="space-y-4">
+                                    <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                                        <span className="text-sm font-medium text-gray-700">
+                                            Tasa de Completitud
+                                        </span>
+                                        <span className="text-lg font-bold text-blue-600">
+                                            {stats.total > 0
+                                                ? Math.round((stats.completed / stats.total) * 100)
+                                                : 0}
+                                            %
+                                        </span>
+                                    </div>
+
+                                    <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                                        <span className="text-sm font-medium text-gray-700">
+                                            Tareas Activas
+                                        </span>
+                                        <span className="text-lg font-bold text-yellow-600">
+                                            {stats.pending + stats.inProgress}
+                                        </span>
+                                    </div>
+
+                                    {stats.overdue > 0 && (
+                                        <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                                            <span className="text-sm font-medium text-gray-700">
+                                                ⚠️ Atención Requerida
+                                            </span>
+                                            <span className="text-lg font-bold text-red-600">
+                                                {stats.overdue} vencidas
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
+                            </div>
+                        </div>
+                    </>
+                )}
+            </div>
+        </Layout>
+    );
+};
+
+export default DashboardPage;
