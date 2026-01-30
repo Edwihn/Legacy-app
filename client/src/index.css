@@ -10,14 +10,14 @@
 }
 
 body {
-    @apply bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-950;
+    @apply bg-gradient-to-br from-slate-950 via-blue-950 to-indigo-950;
     min-height: 100vh;
 }
 
 /* Componentes personalizados reutilizables */
 @layer components {
     .btn-primary {
-        @apply px-4 py-2 bg-gradient-to-r from-blue-800 to-indigo-900 text-white font-medium rounded-lg hover:from-blue-700 hover:to-indigo-800 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5;
+        @apply px-4 py-2 bg-gradient-to-r from-blue-950 to-indigo-950 text-white font-medium rounded-lg hover:from-blue-900 hover:to-indigo-900 transition-all duration-200 shadow-md hover:shadow-lg transform hover:-translate-y-0.5;
     }
 
     .btn-secondary {
@@ -29,11 +29,11 @@ body {
     }
 
     .input-field {
-        @apply w-full px-4 py-2.5 border border-slate-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-200 bg-slate-800 text-gray-100;
+        @apply w-full px-4 py-2.5 border border-slate-700 rounded-lg focus:ring-2 focus:ring-blue-700 focus:border-transparent transition-all duration-200 bg-slate-900 text-gray-100;
     }
 
     .card {
-        @apply bg-slate-800 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-slate-700;
+        @apply bg-slate-900 rounded-xl shadow-md hover:shadow-xl transition-shadow duration-300 border border-slate-800;
     }
 
     .badge {
@@ -45,7 +45,7 @@ body {
     }
 
     .badge-en-progreso {
-        @apply bg-blue-900 text-blue-200;
+        @apply bg-blue-950 text-blue-300;
     }
 
     .badge-completada {
@@ -61,7 +61,7 @@ body {
     }
 
     .badge-priority-media {
-        @apply bg-blue-900 text-blue-200;
+        @apply bg-blue-950 text-blue-300;
     }
 
     .badge-priority-alta {

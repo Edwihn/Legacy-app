@@ -55,7 +55,7 @@ const DashboardPage: React.FC = () => {
 
                 {loading ? (
                     <div className="flex justify-center items-center py-12">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400"></div>
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-700"></div>
                     </div>
                 ) : (
                     <>
@@ -63,9 +63,9 @@ const DashboardPage: React.FC = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                             <div className="card p-6 animate-fade-in">
                                 <div className="flex items-center">
-                                    <div className="p-3 bg-blue-900/50 rounded-lg">
+                                    <div className="p-3 bg-blue-950/50 rounded-lg">
                                         <svg
-                                            className="w-6 h-6 text-blue-600"
+                                            className="w-6 h-6 text-blue-800"
                                             fill="none"
                                             stroke="currentColor"
                                             viewBox="0 0 24 24"
@@ -266,7 +266,7 @@ const DashboardPage: React.FC = () => {
                                         </div>
                                         <div className="w-full bg-gray-200 rounded-full h-2">
                                             <div
-                                                className="bg-blue-500 h-2 rounded-full transition-all"
+                                                className="bg-blue-700 h-2 rounded-full transition-all"
                                                 style={{
                                                     width: `${stats.total > 0
                                                         ? (stats.inProgress / stats.total) * 100
@@ -306,11 +306,11 @@ const DashboardPage: React.FC = () => {
                                     Quick Summary
                                 </h3>
                                 <div className="space-y-4">
-                                    <div className="flex items-center justify-between p-3 bg-blue-900/30 rounded-lg">
+                                    <div className="flex items-center justify-between p-3 bg-blue-950/30 rounded-lg">
                                         <span className="text-sm font-medium text-gray-300">
                                             Completion Rate
                                         </span>
-                                        <span className="text-lg font-bold text-blue-400">
+                                        <span className="text-lg font-bold text-blue-500">
                                             {stats.total > 0
                                                 ? Math.round((stats.completed / stats.total) * 100)
                                                 : 0}

@@ -72,7 +72,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
 
     const getNotificationColor = (type: string) => {
         const colors: Record<string, string> = {
-            task_assigned: 'bg-blue-900/40 border-blue-800',
+            task_assigned: 'bg-blue-950/40 border-blue-900',
             task_updated: 'bg-yellow-900/40 border-yellow-800',
             task_completed: 'bg-green-900/40 border-green-800',
             task_deleted: 'bg-red-900/40 border-red-800',
@@ -127,7 +127,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
                     <div className="mb-4">
                         <button
                             onClick={handleMarkAllAsRead}
-                            className="text-sm text-blue-600 hover:text-blue-800 font-medium"
+                            className="text-blue-800 hover:text-blue-950 text-xs font-medium"
                         >
                             Mark all as read
                         </button>
@@ -137,7 +137,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
                 <div className="flex-1 overflow-y-auto">
                     {loading ? (
                         <div className="flex justify-center items-center py-12">
-                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-800"></div>
                         </div>
                     ) : notifications.length === 0 ? (
                         <div className="text-center py-12">

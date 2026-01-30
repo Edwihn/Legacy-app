@@ -491,7 +491,7 @@ const TasksPage: React.FC = () => {
                 {/* Lista de Tareas */}
                 {loading ? (
                     <div className="flex justify-center items-center py-12">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-800"></div>
                     </div>
                 ) : tasks.length === 0 ? (
                     <div className="card p-12 text-center">
@@ -579,7 +579,7 @@ const TasksPage: React.FC = () => {
                                                 </button>
                                                 <button
                                                     onClick={() => handleEdit(task)}
-                                                    className="text-blue-600 hover:text-blue-900 mr-3"
+                                                    className="text-blue-800 hover:text-blue-950 mr-3"
                                                 >
                                                     Edit
                                                 </button>

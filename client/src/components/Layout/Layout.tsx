@@ -40,14 +40,14 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-950">
+        <div className="min-h-screen bg-gradient-to-br from-slate-950 via-blue-950 to-indigo-950">
             {/* Header */}
             <header className="bg-slate-800 shadow-md border-b border-slate-700">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center py-4">
                         <div className="flex items-center space-x-8">
                             <Link to="/dashboard" className="flex items-center">
-                                <div className="w-10 h-10 bg-gradient-to-r from-blue-700 to-indigo-800 rounded-lg flex items-center justify-center">
+                                <div className="w-10 h-10 bg-gradient-to-r from-blue-950 to-indigo-950 rounded-lg flex items-center justify-center">
                                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                     </svg>
@@ -59,7 +59,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                                 <Link
                                     to="/dashboard"
                                     className={`px-4 py-2 rounded-lg font-medium transition-all ${isActive('/dashboard')
-                                        ? 'bg-blue-900 text-blue-100'
+                                        ? 'bg-blue-950 text-blue-200'
                                         : 'text-gray-300 hover:bg-slate-700'
                                         }`}
                                 >

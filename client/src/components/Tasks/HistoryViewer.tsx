@@ -107,7 +107,7 @@ const HistoryViewer: React.FC<HistoryViewerProps> = ({ taskId, onClose }) => {
                 <div className="flex-1 overflow-y-auto">
                     {loading ? (
                         <div className="flex justify-center items-center py-12">
-                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-800"></div>
                         </div>
                     ) : history.length === 0 ? (
                         <div className="text-center py-12">
@@ -126,7 +126,7 @@ const HistoryViewer: React.FC<HistoryViewerProps> = ({ taskId, onClose }) => {
                                     className="relative pl-8 pb-4 border-l-2 border-slate-600 last:border-l-0"
                                 >
                                     {/* Timeline dot */}
-                                    <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-blue-500 border-2 border-slate-800"></div>
+                                    <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-blue-700 border-2 border-slate-800"></div>
 
                                     <div className="bg-slate-700/50 p-4 rounded-lg shadow-sm border border-slate-600 hover:shadow-md transition-shadow">
                                         <div className="flex items-start justify-between mb-2">

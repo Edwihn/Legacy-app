@@ -70,7 +70,7 @@ const ReportsPage: React.FC = () => {
         return (
             <Layout>
                 <div className="flex justify-center items-center h-full">
-                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                    <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-800"></div>
                 </div>
             </Layout>
         );
@@ -137,7 +137,7 @@ const ReportsPage: React.FC = () => {
                                     <div className="w-full bg-gray-200 rounded-full h-2.5">
                                         <div
                                             className={`h-2.5 rounded-full ${status === 'Completada' ? 'bg-green-500' :
-                                                status === 'En Progreso' ? 'bg-blue-500' :
+                                                status === 'En Progreso' ? 'bg-blue-700' :
                                                     status === 'Pendiente' ? 'bg-yellow-400' : 'bg-gray-500'
                                                 }`}
                                             style={{ width: `${taskStats?.total ? (count / taskStats.total) * 100 : 0}%` }}
@@ -161,7 +161,7 @@ const ReportsPage: React.FC = () => {
                                     <div className="w-full bg-gray-200 rounded-full h-2.5">
                                         <div
                                             className={`h-2.5 rounded-full ${priority === 'Alta' || priority === 'Crítica' ? 'bg-red-500' :
-                                                priority === 'Media' ? 'bg-yellow-500' : 'bg-blue-400'
+                                                priority === 'Media' ? 'bg-yellow-500' : 'bg-blue-600'
                                                 }`}
                                             style={{ width: `${taskStats?.total ? (count / taskStats.total) * 100 : 0}%` }}
                                         ></div>
@@ -198,7 +198,7 @@ const ReportsPage: React.FC = () => {
                                                 <div className="flex items-center">
                                                     <div className="w-full max-w-xs bg-gray-200 rounded-full h-2.5 mr-2">
                                                         <div
-                                                            className="bg-blue-600 h-2.5 rounded-full"
+                                                            className="bg-blue-800 h-2.5 rounded-full"
                                                             style={{ width: `${progress}%` }}
                                                         ></div>
                                                     </div>
