@@ -32,6 +32,14 @@ app.use('/api/history', historyRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/reports', reportRoutes);
 
+// Manejo de rutas no encontradas de la API
+app.use('/api/*', (req, res) => {
+    res.status(404).json({
+        success: false,
+        message: 'Ruta de API no encontrada',
+    });
+});
+
 // Ruta de prueba
 app.get('/api/health', (req, res) => {
     res.status(200).json({
@@ -41,12 +49,16 @@ app.get('/api/health', (req, res) => {
     });
 });
 
-// Manejo de rutas no encontradas
-app.use('*', (req, res) => {
-    res.status(404).json({
-        success: false,
-        message: 'Ruta no encontrada',
-    });
+// Servir archivos estáticos del frontend en producción
+import path from 'path';
+
+// Servir archivos estáticos desde la carpeta client/dist
+// La ruta es relativa al archivo compilado en dist/server.js
+app.use(express.static(path.join(__dirname, '../../client/dist')));
+
+// Manejar cualquier otra ruta devolviendo el index.html (para SPA)
+app.get('*', (req, res) => {
+    res.sendFile(path.join(__dirname, '../../client/dist/index.html'));
 });
 
 // Puerto
