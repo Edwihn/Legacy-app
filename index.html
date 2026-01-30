@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Task Manager Legacy - Sistema Simple</title>
     <link rel="stylesheet" href="style.css">
 </head>
+
 <body>
     <div class="container">
-        <h1>Task Manager Legacy</h1>
-        
+        <div class="main-header">
+            <h1>Task Manager Legacy</h1>
+            <button class="theme-toggle" onclick="toggleTheme()">🌓 Cambiar Tema</button>
+        </div>
+
         <!-- Panel de Login -->
         <div id="loginPanel" class="panel">
             <h2>Login</h2>
@@ -48,7 +53,7 @@
             <!-- Tab: Tareas -->
             <div id="tasksTab" class="tab-content active">
                 <h2>Gestión de Tareas</h2>
-                
+
                 <div class="form-section">
                     <h3>Nueva/Editar Tarea</h3>
                     <div class="form-group">
@@ -276,4 +281,5 @@
 
     <script src="app.js"></script>
 </body>
+
 </html>

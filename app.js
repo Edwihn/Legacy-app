@@ -177,9 +177,25 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Gestión de Tema
 function loadTheme() {
+    // Primero verificar si hay una preferencia guardada por el usuario
     const savedTheme = localStorage.getItem('appTheme');
-    if (savedTheme === 'dark') {
-        document.body.classList.add('dark-theme');
+
+    if (savedTheme) {
+        // Si el usuario ya eligió un tema, usar ese
+        if (savedTheme === 'dark') {
+            document.body.classList.add('dark-theme');
+        }
+    } else {
+        // Si no hay preferencia guardada, detectar el tema del navegador/sistema
+        const prefersDark = window.matchMedia('(prefers-color-scheme: dark)').matches;
+        if (prefersDark) {
+            document.body.classList.add('dark-theme');
+            // Guardar la detección automática
+            localStorage.setItem('appTheme', 'dark');
+        } else {
+            // Tema claro por defecto
+            localStorage.setItem('appTheme', 'light');
+        }
     }
 }
 
@@ -188,6 +204,20 @@ function toggleTheme() {
     const isDark = document.body.classList.contains('dark-theme');
     localStorage.setItem('appTheme', isDark ? 'dark' : 'light');
 }
+
+// Detectar cambios en el tema del sistema en tiempo real
+// Solo si el usuario no ha establecido una preferencia manual
+window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+    // Solo aplicar si no hay preferencia manual guardada
+    const savedTheme = localStorage.getItem('appTheme');
+    if (!savedTheme) {
+        if (e.matches) {
+            document.body.classList.add('dark-theme');
+        } else {
+            document.body.classList.remove('dark-theme');
+        }
+    }
+});
 
 // Login
 function login() {
