@@ -30,19 +30,19 @@ const LoginForm: React.FC = () => {
                 <div className="card p-8 animate-fade-in">
                     {/* Header */}
                     <div className="text-center mb-8">
-                        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-full mb-4">
+                        <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-700 to-indigo-800 rounded-full mb-4">
                             <svg className="w-8 h-8 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                             </svg>
                         </div>
-                        <h2 className="text-3xl font-bold text-gray-900">Task Manager</h2>
-                        <p className="mt-2 text-gray-600">Task Management System</p>
+                        <h2 className="text-3xl font-bold text-gray-100">Task Manager</h2>
+                        <p className="mt-2 text-gray-400">Task Management System</p>
                     </div>
 
                     {/* Form */}
                     <form onSubmit={handleSubmit} className="space-y-6">
                         <div>
-                            <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="username" className="block text-sm font-medium text-gray-300 mb-2">
                                 Username
                             </label>
                             <input
@@ -57,7 +57,7 @@ const LoginForm: React.FC = () => {
                         </div>
 
                         <div>
-                            <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+                            <label htmlFor="password" className="block text-sm font-medium text-gray-300 mb-2">
                                 Password
                             </label>
                             <input
@@ -91,9 +91,9 @@ const LoginForm: React.FC = () => {
                     </form>
 
                     {/* Credentials hint */}
-                    <div className="mt-6 p-4 bg-blue-50 rounded-lg border border-blue-200">
-                        <p className="text-sm text-blue-800 font-medium">Default credentials:</p>
-                        <p className="text-xs text-blue-600 mt-1">Username: admin | Password: admin</p>
+                    <div className="mt-6 p-4 bg-blue-900 rounded-lg border border-blue-800">
+                        <p className="text-sm text-blue-200 font-medium">Default credentials:</p>
+                        <p className="text-xs text-blue-300 mt-1">Username: admin | Password: admin</p>
                     </div>
                 </div>
             </div>

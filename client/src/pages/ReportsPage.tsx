@@ -80,7 +80,7 @@ const ReportsPage: React.FC = () => {
         <Layout>
             <div className="space-y-6">
                 <div className="flex justify-between items-center">
-                    <h1 className="text-3xl font-bold text-gray-900">Reports Panel</h1>
+                    <h1 className="text-3xl font-bold text-gray-100">Reports Panel</h1>
                     <button
                         onClick={handleExportCSV}
                         className="btn-secondary flex items-center"
@@ -94,13 +94,13 @@ const ReportsPage: React.FC = () => {
 
                 {/* Métricas Generales */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-                    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                    <div className="bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-700">
                         <div className="text-gray-500 text-sm font-medium uppercase">Total Tasks</div>
                         <div className="mt-2 flex items-baseline">
-                            <span className="text-3xl font-bold text-gray-900">{taskStats?.total || 0}</span>
+                            <span className="text-3xl font-bold text-gray-100">{taskStats?.total || 0}</span>
                         </div>
                     </div>
-                    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                    <div className="bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-700">
                         <div className="text-gray-500 text-sm font-medium uppercase">Completed</div>
                         <div className="mt-2 flex items-baseline">
                             <span className="text-3xl font-bold text-green-600">{taskStats?.completed || 0}</span>
@@ -109,13 +109,13 @@ const ReportsPage: React.FC = () => {
                             </span>
                         </div>
                     </div>
-                    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                    <div className="bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-700">
                         <div className="text-gray-500 text-sm font-medium uppercase">Pending</div>
                         <div className="mt-2 flex items-baseline">
                             <span className="text-3xl font-bold text-yellow-600">{taskStats?.pending || 0}</span>
                         </div>
                     </div>
-                    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
+                    <div className="bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-700">
                         <div className="text-gray-500 text-sm font-medium uppercase">Overdue</div>
                         <div className="mt-2 flex items-baseline">
                             <span className="text-3xl font-bold text-red-600">{taskStats?.overdue || 0}</span>
@@ -125,13 +125,13 @@ const ReportsPage: React.FC = () => {
 
                 <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
                     {/* Gráfico de Barras: Estado */}
-                    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                        <h3 className="text-lg font-semibold text-gray-800 mb-4">Tasks by Status</h3>
+                    <div className="bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-700">
+                        <h3 className="text-lg font-semibold text-gray-100 mb-4">Tasks by Status</h3>
                         <div className="space-y-4">
                             {Object.entries(taskStats?.byStatus || {}).map(([status, count]) => (
                                 <div key={status}>
                                     <div className="flex justify-between text-sm mb-1">
-                                        <span className="font-medium text-gray-700">{translateStatus(status)}</span>
+                                        <span className="font-medium text-gray-300">{translateStatus(status)}</span>
                                         <span className="text-gray-600">{count}</span>
                                     </div>
                                     <div className="w-full bg-gray-200 rounded-full h-2.5">
@@ -149,13 +149,13 @@ const ReportsPage: React.FC = () => {
                     </div>
 
                     {/* Gráfico de Barras: Prioridad */}
-                    <div className="bg-white p-6 rounded-lg shadow-sm border border-gray-200">
-                        <h3 className="text-lg font-semibold text-gray-800 mb-4">Tasks by Priority</h3>
+                    <div className="bg-slate-800 p-6 rounded-lg shadow-sm border border-slate-700">
+                        <h3 className="text-lg font-semibold text-gray-100 mb-4">Tasks by Priority</h3>
                         <div className="space-y-4">
                             {Object.entries(taskStats?.byPriority || {}).map(([priority, count]) => (
                                 <div key={priority}>
                                     <div className="flex justify-between text-sm mb-1">
-                                        <span className="font-medium text-gray-700">{translatePriority(priority)}</span>
+                                        <span className="font-medium text-gray-300">{translatePriority(priority)}</span>
                                         <span className="text-gray-600">{count}</span>
                                     </div>
                                     <div className="w-full bg-gray-200 rounded-full h-2.5">
@@ -173,13 +173,13 @@ const ReportsPage: React.FC = () => {
                 </div>
 
                 {/* Tabla de Progreso de Proyectos */}
-                <div className="bg-white rounded-lg shadow-sm border border-gray-200 overflow-hidden">
-                    <div className="px-6 py-4 border-b border-gray-200">
-                        <h3 className="text-lg font-semibold text-gray-800">Progress by Project</h3>
+                <div className="bg-slate-800 rounded-lg shadow-sm border border-slate-700 overflow-hidden">
+                    <div className="px-6 py-4 border-b border-slate-700">
+                        <h3 className="text-lg font-semibold text-gray-100">Progress by Project</h3>
                     </div>
                     <div className="overflow-x-auto">
                         <table className="min-w-full divide-y divide-gray-200">
-                            <thead className="bg-gray-50">
+                            <thead className="bg-slate-700">
                                 <tr>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Project</th>
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Tasks</th>
@@ -187,12 +187,12 @@ const ReportsPage: React.FC = () => {
                                     <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Pending</th>
                                 </tr>
                             </thead>
-                            <tbody className="bg-white divide-y divide-gray-200">
+                            <tbody className="bg-slate-800 divide-y divide-slate-700">
                                 {projectStats?.projects.map((proj) => {
                                     const progress = proj.totalTasks ? Math.round((proj.completed / proj.totalTasks) * 100) : 0;
                                     return (
                                         <tr key={proj.projectId}>
-                                            <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-900">{proj.projectName}</td>
+                                            <td className="px-6 py-4 whitespace-nowrap font-medium text-gray-100">{proj.projectName}</td>
                                             <td className="px-6 py-4 whitespace-nowrap text-gray-500">{proj.totalTasks}</td>
                                             <td className="px-6 py-4 whitespace-nowrap align-middle">
                                                 <div className="flex items-center">

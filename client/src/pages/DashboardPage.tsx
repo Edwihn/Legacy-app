@@ -49,13 +49,13 @@ const DashboardPage: React.FC = () => {
         <Layout>
             <div>
                 <header className="mb-8">
-                    <h1 className="text-4xl font-bold text-gray-900">Dashboard</h1>
-                    <p className="text-gray-600 mt-2">General system overview</p>
+                    <h1 className="text-4xl font-bold text-gray-100">Dashboard</h1>
+                    <p className="text-gray-400 mt-2">General system overview</p>
                 </header>
 
                 {loading ? (
                     <div className="flex justify-center items-center py-12">
-                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-600"></div>
+                        <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-blue-400"></div>
                     </div>
                 ) : (
                     <>
@@ -79,10 +79,10 @@ const DashboardPage: React.FC = () => {
                                         </svg>
                                     </div>
                                     <div className="ml-4">
-                                        <p className="text-sm font-medium text-gray-600">
+                                        <p className="text-sm font-medium text-gray-400">
                                             Total Tasks
                                         </p>
-                                        <p className="text-2xl font-bold text-gray-900">
+                                        <p className="text-2xl font-bold text-gray-100">
                                             {stats.total}
                                         </p>
                                     </div>
@@ -110,10 +110,10 @@ const DashboardPage: React.FC = () => {
                                         </svg>
                                     </div>
                                     <div className="ml-4">
-                                        <p className="text-sm font-medium text-gray-600">
+                                        <p className="text-sm font-medium text-gray-400">
                                             Completed
                                         </p>
-                                        <p className="text-2xl font-bold text-gray-900">
+                                        <p className="text-2xl font-bold text-gray-100">
                                             {stats.completed}
                                         </p>
                                     </div>
@@ -141,10 +141,10 @@ const DashboardPage: React.FC = () => {
                                         </svg>
                                     </div>
                                     <div className="ml-4">
-                                        <p className="text-sm font-medium text-gray-600">
+                                        <p className="text-sm font-medium text-gray-400">
                                             In Progress
                                         </p>
-                                        <p className="text-2xl font-bold text-gray-900">
+                                        <p className="text-2xl font-bold text-gray-100">
                                             {stats.inProgress}
                                         </p>
                                     </div>
@@ -172,10 +172,10 @@ const DashboardPage: React.FC = () => {
                                         </svg>
                                     </div>
                                     <div className="ml-4">
-                                        <p className="text-sm font-medium text-gray-600">
+                                        <p className="text-sm font-medium text-gray-400">
                                             Overdue
                                         </p>
-                                        <p className="text-2xl font-bold text-gray-900">
+                                        <p className="text-2xl font-bold text-gray-100">
                                             {stats.overdue}
                                         </p>
                                     </div>
@@ -185,13 +185,13 @@ const DashboardPage: React.FC = () => {
 
                         {/* Tarjeta Informativa */}
                         <div className="card p-8">
-                            <h2 className="text-2xl font-bold text-gray-900 mb-4">
+                            <h2 className="text-2xl font-bold text-gray-100 mb-4">
                                 🚀 Welcome to the Task Manager
                             </h2>
-                            <p className="text-gray-600 mb-4">
+                            <p className="text-gray-300 mb-4">
                                 A comprehensive solution to organize and track your work efficiently:
                             </p>
-                            <ul className="space-y-2 text-gray-700">
+                            <ul className="space-y-2 text-gray-400">
                                 <li className="flex items-center">
                                     <span className="text-green-500 mr-2">✓</span>
                                     Create and organize tasks with priorities and due dates
@@ -231,14 +231,14 @@ const DashboardPage: React.FC = () => {
                         {/* Estadísticas Adicionales */}
                         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6 mt-8">
                             <div className="card p-6">
-                                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                                <h3 className="text-lg font-semibold text-gray-100 mb-4">
                                     Status Distribution
                                 </h3>
                                 <div className="space-y-3">
                                     <div>
                                         <div className="flex justify-between items-center mb-1">
-                                            <span className="text-sm text-gray-600">Pending</span>
-                                            <span className="text-sm font-semibold text-gray-900">
+                                            <span className="text-sm text-gray-400">Pending</span>
+                                            <span className="text-sm font-semibold text-gray-100">
                                                 {stats.pending}
                                             </span>
                                         </div>
@@ -257,10 +257,10 @@ const DashboardPage: React.FC = () => {
 
                                     <div>
                                         <div className="flex justify-between items-center mb-1">
-                                            <span className="text-sm text-gray-600">
+                                            <span className="text-sm text-gray-400">
                                                 In Progress
                                             </span>
-                                            <span className="text-sm font-semibold text-gray-900">
+                                            <span className="text-sm font-semibold text-gray-100">
                                                 {stats.inProgress}
                                             </span>
                                         </div>
@@ -279,10 +279,10 @@ const DashboardPage: React.FC = () => {
 
                                     <div>
                                         <div className="flex justify-between items-center mb-1">
-                                            <span className="text-sm text-gray-600">
+                                            <span className="text-sm text-gray-400">
                                                 Completed
                                             </span>
-                                            <span className="text-sm font-semibold text-gray-900">
+                                            <span className="text-sm font-semibold text-gray-100">
                                                 {stats.completed}
                                             </span>
                                         </div>
@@ -302,15 +302,15 @@ const DashboardPage: React.FC = () => {
                             </div>
 
                             <div className="card p-6">
-                                <h3 className="text-lg font-semibold text-gray-900 mb-4">
+                                <h3 className="text-lg font-semibold text-gray-100 mb-4">
                                     Quick Summary
                                 </h3>
                                 <div className="space-y-4">
                                     <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
-                                        <span className="text-sm font-medium text-gray-700">
+                                        <span className="text-sm font-medium text-gray-300">
                                             Completion Rate
                                         </span>
-                                        <span className="text-lg font-bold text-blue-600">
+                                        <span className="text-lg font-bold text-blue-400">
                                             {stats.total > 0
                                                 ? Math.round((stats.completed / stats.total) * 100)
                                                 : 0}
@@ -319,7 +319,7 @@ const DashboardPage: React.FC = () => {
                                     </div>
 
                                     <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
-                                        <span className="text-sm font-medium text-gray-700">
+                                        <span className="text-sm font-medium text-gray-300">
                                             Active Tasks
                                         </span>
                                         <span className="text-lg font-bold text-yellow-600">
@@ -329,7 +329,7 @@ const DashboardPage: React.FC = () => {
 
                                     {stats.overdue > 0 && (
                                         <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
-                                            <span className="text-sm font-medium text-gray-700">
+                                            <span className="text-sm font-medium text-gray-300">
                                                 ⚠️ Attention Required
                                             </span>
                                             <span className="text-lg font-bold text-red-600">

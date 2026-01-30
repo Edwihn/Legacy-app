@@ -40,27 +40,27 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     };
 
     return (
-        <div className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-indigo-50">
+        <div className="min-h-screen bg-gradient-to-br from-slate-900 via-blue-900 to-indigo-950">
             {/* Header */}
-            <header className="bg-white shadow-md">
+            <header className="bg-slate-800 shadow-md border-b border-slate-700">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center py-4">
                         <div className="flex items-center space-x-8">
                             <Link to="/dashboard" className="flex items-center">
-                                <div className="w-10 h-10 bg-gradient-to-r from-blue-600 to-indigo-600 rounded-lg flex items-center justify-center">
+                                <div className="w-10 h-10 bg-gradient-to-r from-blue-700 to-indigo-800 rounded-lg flex items-center justify-center">
                                     <svg className="w-6 h-6 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                                     </svg>
                                 </div>
-                                <span className="ml-3 text-xl font-bold text-gray-900">Task Manager</span>
+                                <span className="ml-3 text-xl font-bold text-gray-100">Task Manager</span>
                             </Link>
 
                             <nav className="hidden md:flex space-x-1">
                                 <Link
                                     to="/dashboard"
                                     className={`px-4 py-2 rounded-lg font-medium transition-all ${isActive('/dashboard')
-                                        ? 'bg-blue-100 text-blue-700'
-                                        : 'text-gray-600 hover:bg-gray-100'
+                                        ? 'bg-blue-900 text-blue-100'
+                                        : 'text-gray-300 hover:bg-slate-700'
                                         }`}
                                 >
                                     Dashboard
@@ -68,8 +68,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                                 <Link
                                     to="/tasks"
                                     className={`px-4 py-2 rounded-lg font-medium transition-all ${isActive('/tasks')
-                                        ? 'bg-blue-100 text-blue-700'
-                                        : 'text-gray-600 hover:bg-gray-100'
+                                        ? 'bg-blue-900 text-blue-100'
+                                        : 'text-gray-300 hover:bg-slate-700'
                                         }`}
                                 >
                                     Tasks
@@ -77,8 +77,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                                 <Link
                                     to="/projects"
                                     className={`px-4 py-2 rounded-lg font-medium transition-all ${isActive('/projects')
-                                        ? 'bg-blue-100 text-blue-700'
-                                        : 'text-gray-600 hover:bg-gray-100'
+                                        ? 'bg-blue-900 text-blue-100'
+                                        : 'text-gray-300 hover:bg-slate-700'
                                         }`}
                                 >
                                     Projects
@@ -86,8 +86,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                                 <Link
                                     to="/reports"
                                     className={`px-4 py-2 rounded-lg font-medium transition-all ${isActive('/reports')
-                                        ? 'bg-blue-100 text-blue-700'
-                                        : 'text-gray-600 hover:bg-gray-100'
+                                        ? 'bg-blue-900 text-blue-100'
+                                        : 'text-gray-300 hover:bg-slate-700'
                                         }`}
                                 >
                                     Reports
@@ -99,7 +99,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                             {/* Botón de Notificaciones */}
                             <button
                                 onClick={() => setShowNotifications(true)}
-                                className="relative p-2 text-gray-600 hover:bg-gray-100 rounded-lg transition-all"
+                                className="relative p-2 text-gray-300 hover:bg-slate-700 rounded-lg transition-all"
                                 title="Notifications"
                             >
                                 <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -113,8 +113,8 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
                             </button>
 
                             <div className="text-right">
-                                <p className="text-sm font-medium text-gray-900">{user?.username}</p>
-                                <p className="text-xs text-gray-500">{user?.role}</p>
+                                <p className="text-sm font-medium text-gray-100">{user?.username}</p>
+                                <p className="text-xs text-gray-400">{user?.role}</p>
                             </div>
                             <button
                                 onClick={() => authService.logout()}

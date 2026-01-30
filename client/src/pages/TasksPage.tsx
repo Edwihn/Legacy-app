@@ -209,7 +209,7 @@ const TasksPage: React.FC = () => {
         <Layout>
             <div>
                 <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-3xl font-bold text-gray-900">Task Management</h1>
+                    <h1 className="text-3xl font-bold text-gray-100">Task Management</h1>
                     <button
                         onClick={() => {
                             resetForm();
@@ -222,7 +222,7 @@ const TasksPage: React.FC = () => {
                 </div>
 
                 {/* Filtros Avanzados */}
-                <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-200 mb-6">
+                <div className="bg-slate-800 p-4 rounded-lg shadow-sm border border-slate-700 mb-6">
                     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4">
                         {/* Búsqueda por texto */}
                         <div className="lg:col-span-1">
@@ -326,7 +326,7 @@ const TasksPage: React.FC = () => {
                     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
                         <div className="card max-w-2xl w-full max-h-[90vh] overflow-y-auto p-6">
                             <div className="flex justify-between items-center mb-4">
-                                <h2 className="text-2xl font-bold text-gray-900">
+                                <h2 className="text-2xl font-bold text-gray-100">
                                     {selectedTask ? 'Edit Task' : 'New Task'}
                                 </h2>
                                 <button
@@ -344,7 +344,7 @@ const TasksPage: React.FC = () => {
 
                             <form onSubmit={handleSubmit} className="space-y-4">
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    <label className="block text-sm font-medium text-gray-300 mb-1">
                                         Title *
                                     </label>
                                     <input
@@ -357,7 +357,7 @@ const TasksPage: React.FC = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    <label className="block text-sm font-medium text-gray-300 mb-1">
                                         Description
                                     </label>
                                     <textarea
@@ -370,7 +370,7 @@ const TasksPage: React.FC = () => {
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        <label className="block text-sm font-medium text-gray-300 mb-1">
                                             Status
                                         </label>
                                         <select
@@ -387,7 +387,7 @@ const TasksPage: React.FC = () => {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        <label className="block text-sm font-medium text-gray-300 mb-1">
                                             Priority
                                         </label>
                                         <select
@@ -404,7 +404,7 @@ const TasksPage: React.FC = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    <label className="block text-sm font-medium text-gray-300 mb-1">
                                         Project *
                                     </label>
                                     <select
@@ -423,7 +423,7 @@ const TasksPage: React.FC = () => {
                                 </div>
 
                                 <div>
-                                    <label className="block text-sm font-medium text-gray-700 mb-1">
+                                    <label className="block text-sm font-medium text-gray-300 mb-1">
                                         Assigned To
                                     </label>
                                     <select
@@ -442,7 +442,7 @@ const TasksPage: React.FC = () => {
 
                                 <div className="grid grid-cols-2 gap-4">
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        <label className="block text-sm font-medium text-gray-300 mb-1">
                                             Due Date
                                         </label>
                                         <input
@@ -454,7 +454,7 @@ const TasksPage: React.FC = () => {
                                     </div>
 
                                     <div>
-                                        <label className="block text-sm font-medium text-gray-700 mb-1">
+                                        <label className="block text-sm font-medium text-gray-300 mb-1">
                                             Estimated Hours
                                         </label>
                                         <input
@@ -500,14 +500,14 @@ const TasksPage: React.FC = () => {
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
                             </svg>
                         </div>
-                        <p className="text-gray-600 text-lg">No tasks found</p>
+                        <p className="text-gray-400 text-lg">No tasks found</p>
                         <p className="text-gray-500 text-sm mt-2">Create your first task by clicking "New Task"</p>
                     </div>
                 ) : (
                     <div className="card overflow-hidden">
                         <div className="overflow-x-auto">
                             <table className="min-w-full divide-y divide-gray-200">
-                                <thead className="bg-gray-50">
+                                <thead className="bg-slate-700">
                                     <tr>
                                         <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                                             Task
@@ -532,12 +532,12 @@ const TasksPage: React.FC = () => {
                                         </th>
                                     </tr>
                                 </thead>
-                                <tbody className="bg-white divide-y divide-gray-200">
+                                <tbody className="bg-slate-800 divide-y divide-slate-700">
                                     {tasks.map((task) => (
-                                        <tr key={task._id} className="hover:bg-gray-50 transition-colors">
+                                        <tr key={task._id} className="hover:bg-slate-700/50 transition-colors">
                                             <td className="px-6 py-4">
                                                 <div>
-                                                    <div className="text-sm font-medium text-gray-900">{task.title}</div>
+                                                    <div className="text-sm font-medium text-gray-100">{task.title}</div>
                                                     {task.description && (
                                                         <div className="text-sm text-gray-500 truncate max-w-md">
                                                             {task.description}
@@ -555,7 +555,7 @@ const TasksPage: React.FC = () => {
                                                     {translatePriority(task.priority)}
                                                 </span>
                                             </td>
-                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                                            <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-100">
                                                 {task.projectId?.name || 'No Project'}
                                             </td>
                                             <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
