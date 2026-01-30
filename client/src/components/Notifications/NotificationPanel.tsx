@@ -72,14 +72,14 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
 
     const getNotificationColor = (type: string) => {
         const colors: Record<string, string> = {
-            task_assigned: 'bg-blue-50 border-blue-200',
-            task_updated: 'bg-yellow-50 border-yellow-200',
-            task_completed: 'bg-green-50 border-green-200',
-            task_deleted: 'bg-red-50 border-red-200',
-            project_created: 'bg-purple-50 border-purple-200',
-            comment_added: 'bg-indigo-50 border-indigo-200',
+            task_assigned: 'bg-blue-900/40 border-blue-800',
+            task_updated: 'bg-yellow-900/40 border-yellow-800',
+            task_completed: 'bg-green-900/40 border-green-800',
+            task_deleted: 'bg-red-900/40 border-red-800',
+            project_created: 'bg-purple-900/40 border-purple-800',
+            comment_added: 'bg-indigo-900/40 border-indigo-800',
         };
-        return colors[type] || 'bg-gray-50 border-gray-200';
+        return colors[type] || 'bg-slate-700 border-slate-600';
     };
 
     const formatDate = (dateString: string) => {
@@ -104,11 +104,11 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
             <div className="card max-w-2xl w-full max-h-[80vh] overflow-hidden p-6 flex flex-col">
                 <div className="flex justify-between items-center mb-4">
                     <div>
-                        <h2 className="text-2xl font-bold text-gray-900">
+                        <h2 className="text-2xl font-bold text-gray-100">
                             🔔 Notifications
                         </h2>
                         {unreadCount > 0 && (
-                            <p className="text-sm text-gray-600 mt-1">
+                            <p className="text-sm text-gray-400 mt-1">
                                 {unreadCount} unread
                             </p>
                         )}
@@ -146,7 +146,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 17h5l-1.405-1.405A2.032 2.032 0 0118 14.158V11a6.002 6.002 0 00-4-5.659V5a2 2 0 10-4 0v.341C7.67 6.165 6 8.388 6 11v3.159c0 .538-.214 1.055-.595 1.436L4 17h5m6 0v1a3 3 0 11-6 0v-1m6 0H9" />
                                 </svg>
                             </div>
-                            <p className="text-gray-600">You have no notifications</p>
+                            <p className="text-gray-400">You have no notifications</p>
                             <p className="text-gray-500 text-sm mt-2">We'll notify you when there are updates</p>
                         </div>
                     ) : (
@@ -161,7 +161,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
                                         <div className="flex items-start space-x-3 flex-1">
                                             <span className="text-2xl">{getNotificationIcon(notification.type)}</span>
                                             <div className="flex-1">
-                                                <p className={`text-sm ${!notification.read ? 'font-semibold text-gray-900' : 'text-gray-700'}`}>
+                                                <p className={`text-sm ${!notification.read ? 'font-semibold text-gray-100' : 'text-gray-300'}`}>
                                                     {notification.message}
                                                 </p>
                                                 <p className="text-xs text-gray-500 mt-1">
@@ -194,7 +194,7 @@ const NotificationPanel: React.FC<NotificationPanelProps> = ({ onClose }) => {
                     )}
                 </div>
 
-                <div className="mt-4 pt-4 border-t border-gray-200">
+                <div className="mt-4 pt-4 border-t border-slate-700">
                     <button onClick={onClose} className="btn-secondary w-full">
                         Close
                     </button>

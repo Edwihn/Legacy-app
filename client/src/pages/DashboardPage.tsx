@@ -63,7 +63,7 @@ const DashboardPage: React.FC = () => {
                         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
                             <div className="card p-6 animate-fade-in">
                                 <div className="flex items-center">
-                                    <div className="p-3 bg-blue-100 rounded-lg">
+                                    <div className="p-3 bg-blue-900/50 rounded-lg">
                                         <svg
                                             className="w-6 h-6 text-blue-600"
                                             fill="none"
@@ -306,7 +306,7 @@ const DashboardPage: React.FC = () => {
                                     Quick Summary
                                 </h3>
                                 <div className="space-y-4">
-                                    <div className="flex items-center justify-between p-3 bg-blue-50 rounded-lg">
+                                    <div className="flex items-center justify-between p-3 bg-blue-900/30 rounded-lg">
                                         <span className="text-sm font-medium text-gray-300">
                                             Completion Rate
                                         </span>
@@ -318,7 +318,7 @@ const DashboardPage: React.FC = () => {
                                         </span>
                                     </div>
 
-                                    <div className="flex items-center justify-between p-3 bg-yellow-50 rounded-lg">
+                                    <div className="flex items-center justify-between p-3 bg-yellow-900/30 rounded-lg">
                                         <span className="text-sm font-medium text-gray-300">
                                             Active Tasks
                                         </span>
@@ -328,7 +328,7 @@ const DashboardPage: React.FC = () => {
                                     </div>
 
                                     {stats.overdue > 0 && (
-                                        <div className="flex items-center justify-between p-3 bg-red-50 rounded-lg">
+                                        <div className="flex items-center justify-between p-3 bg-red-900/30 rounded-lg">
                                             <span className="text-sm font-medium text-gray-300">
                                                 ⚠️ Attention Required
                                             </span>

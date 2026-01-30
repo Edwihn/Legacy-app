@@ -190,7 +190,7 @@ const ProjectsPage: React.FC = () => {
                                             {project.description || 'No description'}
                                         </p>
                                     </div>
-                                    <div className="p-2 bg-blue-100 rounded-lg">
+                                    <div className="p-2 bg-blue-900/50 rounded-lg">
                                         <svg className="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                             <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 13h6m-3-3v6m-9 1V7a2 2 0 012-2h6l2 2h6a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2z" />
                                         </svg>
@@ -201,16 +201,16 @@ const ProjectsPage: React.FC = () => {
                                     Created: {new Date(project.createdAt).toLocaleDateString()}
                                 </div>
 
-                                <div className="flex space-x-2 pt-4 border-t border-gray-200">
+                                <div className="flex space-x-2 pt-4 border-t border-slate-700">
                                     <button
                                         onClick={() => handleEdit(project)}
-                                        className="flex-1 px-3 py-2 text-sm bg-blue-50 text-blue-600 rounded-lg hover:bg-blue-100 transition-colors font-medium"
+                                        className="flex-1 px-3 py-2 text-sm bg-blue-900/40 text-blue-300 rounded-lg hover:bg-blue-900/60 transition-colors font-medium"
                                     >
                                         Edit
                                     </button>
                                     <button
                                         onClick={() => handleDelete(project._id)}
-                                        className="flex-1 px-3 py-2 text-sm bg-red-50 text-red-600 rounded-lg hover:bg-red-100 transition-colors font-medium"
+                                        className="flex-1 px-3 py-2 text-sm bg-red-900/40 text-red-300 rounded-lg hover:bg-red-900/60 transition-colors font-medium"
                                     >
                                         Delete
                                     </button>

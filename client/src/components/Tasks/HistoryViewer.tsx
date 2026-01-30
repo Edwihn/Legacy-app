@@ -66,11 +66,11 @@ const HistoryViewer: React.FC<HistoryViewerProps> = ({ taskId, onClose }) => {
         if (!changes || Object.keys(changes).length === 0) return null;
 
         return (
-            <div className="mt-2 text-xs text-gray-600 bg-gray-50 p-2 rounded">
+            <div className="mt-2 text-xs text-gray-400 bg-slate-700/50 p-2 rounded">
                 {Object.entries(changes).map(([key, value]) => (
                     <div key={key} className="mb-1">
                         <span className="font-medium">{key}:</span>{' '}
-                        <span className="text-gray-700">
+                        <span className="text-gray-300">
                             {value?.from && value?.to ? (
                                 <>
                                     <span className="line-through text-red-600">{value.from}</span>
@@ -91,7 +91,7 @@ const HistoryViewer: React.FC<HistoryViewerProps> = ({ taskId, onClose }) => {
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4">
             <div className="card max-w-2xl w-full max-h-[80vh] overflow-hidden p-6 flex flex-col">
                 <div className="flex justify-between items-center mb-4">
-                    <h2 className="text-2xl font-bold text-gray-900">
+                    <h2 className="text-2xl font-bold text-gray-100">
                         📜 Change History
                     </h2>
                     <button
@@ -116,27 +116,27 @@ const HistoryViewer: React.FC<HistoryViewerProps> = ({ taskId, onClose }) => {
                                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
                                 </svg>
                             </div>
-                            <p className="text-gray-600">No history available</p>
+                            <p className="text-gray-400">No history available</p>
                         </div>
                     ) : (
                         <div className="space-y-4">
                             {history.map((entry) => (
                                 <div
                                     key={entry._id}
-                                    className="relative pl-8 pb-4 border-l-2 border-gray-200 last:border-l-0"
+                                    className="relative pl-8 pb-4 border-l-2 border-slate-600 last:border-l-0"
                                 >
                                     {/* Timeline dot */}
-                                    <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-blue-500 border-2 border-white"></div>
+                                    <div className="absolute -left-2 top-0 w-4 h-4 rounded-full bg-blue-500 border-2 border-slate-800"></div>
 
-                                    <div className="bg-white p-4 rounded-lg shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
+                                    <div className="bg-slate-700/50 p-4 rounded-lg shadow-sm border border-slate-600 hover:shadow-md transition-shadow">
                                         <div className="flex items-start justify-between mb-2">
                                             <div className="flex items-center space-x-2">
                                                 <span className="text-2xl">{getActionIcon(entry.action)}</span>
                                                 <div>
-                                                    <p className="font-semibold text-gray-900">
+                                                    <p className="font-semibold text-gray-100">
                                                         {getActionText(entry.action)}
                                                     </p>
-                                                    <p className="text-sm text-gray-600">
+                                                    <p className="text-sm text-gray-400">
                                                         by <span className="font-medium">{entry.userId?.username || 'Unknown user'}</span>
                                                     </p>
                                                 </div>
@@ -158,7 +158,7 @@ const HistoryViewer: React.FC<HistoryViewerProps> = ({ taskId, onClose }) => {
                     )}
                 </div>
 
-                <div className="mt-4 pt-4 border-t border-gray-200">
+                <div className="mt-4 pt-4 border-t border-slate-700">
                     <button onClick={onClose} className="btn-secondary w-full">
                         Close
                     </button>
