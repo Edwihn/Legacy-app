@@ -1,32 +1,77 @@
 /* CSS básico con apariencia antigua */
+
+/* Variables de tema claro (por defecto) */
+:root {
+    --bg-body: #c0c0c0;
+    --bg-container: #fff;
+    --bg-header: #e0e0e0;
+    --bg-form: #f5f5f5;
+    --bg-tab-inactive: #d0d0d0;
+    --bg-tab-active: #fff;
+    --bg-tab-hover: #e0e0e0;
+    --bg-button: #d0d0d0;
+    --bg-button-hover: #e0e0e0;
+    --bg-button-active: #c0c0c0;
+    --bg-table-header: #d0d0d0;
+    --bg-table-row-even: #f5f5f5;
+    --bg-table-row-hover: #e0e0e0;
+    --bg-stats: #e0e0e0;
+    --text-color: #000;
+    --border-color: #000;
+}
+
+/* Variables de tema oscuro */
+body.dark-theme {
+    --bg-body: #2a2a2a;
+    --bg-container: #1e1e1e;
+    --bg-header: #333333;
+    --bg-form: #2a2a2a;
+    --bg-tab-inactive: #404040;
+    --bg-tab-active: #1e1e1e;
+    --bg-tab-hover: #4a4a4a;
+    --bg-button: #404040;
+    --bg-button-hover: #4a4a4a;
+    --bg-button-active: #333333;
+    --bg-table-header: #404040;
+    --bg-table-row-even: #2a2a2a;
+    --bg-table-row-hover: #333333;
+    --bg-stats: #333333;
+    --text-color: #e0e0e0;
+    --border-color: #555555;
+}
+
 body {
     font-family: "Courier New", monospace;
     font-size: 12px;
     margin: 10px;
-    background-color: #c0c0c0;
-    color: #000;
+    background-color: var(--bg-body);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 .container {
     max-width: 1200px;
     margin: 0 auto;
-    background-color: #fff;
-    border: 2px solid #000;
+    background-color: var(--bg-container);
+    border: 2px solid var(--border-color);
     padding: 10px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 h1 {
     font-size: 18px;
     margin: 5px 0;
     text-align: center;
-    border-bottom: 2px solid #000;
+    border-bottom: 2px solid var(--border-color);
     padding-bottom: 5px;
+    transition: border-color 0.3s ease;
 }
 
 h2 {
     font-size: 14px;
     margin: 10px 0 5px 0;
-    border-bottom: 1px solid #000;
+    border-bottom: 1px solid var(--border-color);
+    transition: border-color 0.3s ease;
 }
 
 h3 {
@@ -43,33 +88,37 @@ h3 {
     justify-content: space-between;
     align-items: center;
     padding: 5px;
-    background-color: #e0e0e0;
-    border: 1px solid #000;
+    background-color: var(--bg-header);
+    border: 1px solid var(--border-color);
     margin-bottom: 10px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .tabs {
     display: flex;
-    border-bottom: 2px solid #000;
+    border-bottom: 2px solid var(--border-color);
     margin-bottom: 10px;
+    transition: border-color 0.3s ease;
 }
 
 .tab-button {
     padding: 5px 10px;
     margin-right: 2px;
-    background-color: #d0d0d0;
-    border: 1px solid #000;
+    background-color: var(--bg-tab-inactive);
+    border: 1px solid var(--border-color);
     border-bottom: none;
     cursor: pointer;
     font-size: 11px;
+    color: var(--text-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 .tab-button:hover {
-    background-color: #e0e0e0;
+    background-color: var(--bg-tab-hover);
 }
 
 .tab-button.active {
-    background-color: #fff;
+    background-color: var(--bg-tab-active);
     font-weight: bold;
 }
 
@@ -83,10 +132,11 @@ h3 {
 }
 
 .form-section {
-    border: 1px solid #000;
+    border: 1px solid var(--border-color);
     padding: 10px;
     margin-bottom: 10px;
-    background-color: #f5f5f5;
+    background-color: var(--bg-form);
+    transition: background-color 0.3s ease, border-color 0.3s ease;
 }
 
 .form-group {
@@ -104,9 +154,12 @@ h3 {
 .form-group textarea {
     width: 300px;
     padding: 2px;
-    border: 1px solid #000;
+    border: 1px solid var(--border-color);
     font-family: "Courier New", monospace;
     font-size: 11px;
+    background-color: var(--bg-container);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 .form-group textarea {
@@ -120,25 +173,28 @@ h3 {
 button {
     padding: 5px 10px;
     margin-right: 5px;
-    background-color: #d0d0d0;
-    border: 1px solid #000;
+    background-color: var(--bg-button);
+    border: 1px solid var(--border-color);
     cursor: pointer;
     font-size: 11px;
     font-family: "Courier New", monospace;
+    color: var(--text-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 button:hover {
-    background-color: #e0e0e0;
+    background-color: var(--bg-button-hover);
 }
 
 button:active {
-    background-color: #c0c0c0;
+    background-color: var(--bg-button-active);
 }
 
 .table-section {
     margin-top: 10px;
-    border: 1px solid #000;
+    border: 1px solid var(--border-color);
     padding: 5px;
+    transition: border-color 0.3s ease;
 }
 
 table {
@@ -149,44 +205,67 @@ table {
 
 table th,
 table td {
-    border: 1px solid #000;
+    border: 1px solid var(--border-color);
     padding: 3px 5px;
     text-align: left;
+    transition: border-color 0.3s ease;
 }
 
 table th {
-    background-color: #d0d0d0;
+    background-color: var(--bg-table-header);
     font-weight: bold;
+    transition: background-color 0.3s ease;
 }
 
 table tr:nth-child(even) {
-    background-color: #f5f5f5;
+    background-color: var(--bg-table-row-even);
 }
 
 table tr:hover {
-    background-color: #e0e0e0;
+    background-color: var(--bg-table-row-hover);
     cursor: pointer;
 }
 
 .text-area-section {
     margin-top: 10px;
-    border: 1px solid #000;
+    border: 1px solid var(--border-color);
     padding: 5px;
+    transition: border-color 0.3s ease;
 }
 
 .text-area-section textarea {
     width: 100%;
-    border: 1px solid #000;
+    border: 1px solid var(--border-color);
     padding: 5px;
     font-family: "Courier New", monospace;
     font-size: 11px;
-    background-color: #fff;
+    background-color: var(--bg-container);
+    color: var(--text-color);
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
 }
 
 .stats {
     margin-top: 10px;
     padding: 5px;
-    background-color: #e0e0e0;
-    border: 1px solid #000;
+    background-color: var(--bg-stats);
+    border: 1px solid var(--border-color);
     font-size: 11px;
+    transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+
+/* Botón de cambio de tema */
+.theme-toggle {
+    padding: 5px 10px;
+    background-color: var(--bg-button);
+    border: 1px solid var(--border-color);
+    cursor: pointer;
+    font-size: 11px;
+    font-family: "Courier New", monospace;
+    color: var(--text-color);
+    margin-left: auto;
+    transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+}
+
+.theme-toggle:hover {
+    background-color: var(--bg-button-hover);
 }

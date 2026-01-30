@@ -172,7 +172,22 @@ document.addEventListener('DOMContentLoaded', () => {
     Storage.init();
     loadProjects();
     loadUsers();
+    loadTheme(); // Cargar el tema guardado
 });
+
+// Gestión de Tema
+function loadTheme() {
+    const savedTheme = localStorage.getItem('appTheme');
+    if (savedTheme === 'dark') {
+        document.body.classList.add('dark-theme');
+    }
+}
+
+function toggleTheme() {
+    document.body.classList.toggle('dark-theme');
+    const isDark = document.body.classList.contains('dark-theme');
+    localStorage.setItem('appTheme', isDark ? 'dark' : 'light');
+}
 
 // Login
 function login() {
@@ -244,7 +259,7 @@ function loadProjects() {
     const projects = Storage.getProjects();
     const select = document.getElementById('taskProject');
     const searchSelect = document.getElementById('searchProject');
-    
+
     select.innerHTML = '';
     if (searchSelect) {
         searchSelect.innerHTML = '<option value="0">Todos</option>';
@@ -289,7 +304,7 @@ function addTask() {
     };
 
     const taskId = Storage.addTask(task);
-    
+
     Storage.addHistory({
         taskId: taskId,
         userId: currentUser.id,
@@ -420,7 +435,7 @@ function loadTasks() {
     const projects = Storage.getProjects();
     const users = Storage.getUsers();
     const tbody = document.getElementById('tasksTableBody');
-    
+
     tbody.innerHTML = '';
 
     tasks.forEach(task => {
@@ -451,7 +466,7 @@ function selectTask(id) {
 
     document.getElementById('taskTitle').value = task.title || '';
     document.getElementById('taskDescription').value = task.description || '';
-    
+
     const statusSelect = document.getElementById('taskStatus');
     for (let i = 0; i < statusSelect.options.length; i++) {
         if (statusSelect.options[i].value === task.status) {
@@ -516,7 +531,7 @@ function updateStats() {
         }
     });
 
-    document.getElementById('statsText').textContent = 
+    document.getElementById('statsText').textContent =
         `Total: ${total} | Completadas: ${completed} | Pendientes: ${pending} | Alta Prioridad: ${highPriority} | Vencidas: ${overdue}`;
 }
 
@@ -591,7 +606,7 @@ function deleteProject() {
 function loadProjectsTable() {
     const projects = Storage.getProjects();
     const tbody = document.getElementById('projectsTableBody');
-    
+
     tbody.innerHTML = '';
 
     projects.forEach(project => {
@@ -646,9 +661,9 @@ function loadComments() {
 
     const comments = Storage.getComments().filter(c => c.taskId === taskId);
     const users = Storage.getUsers();
-    
+
     let text = `=== COMENTARIOS TAREA #${taskId} ===\n\n`;
-    
+
     if (comments.length === 0) {
         text += 'No hay comentarios\n';
     } else {
@@ -671,9 +686,9 @@ function loadHistory() {
 
     const history = Storage.getHistory().filter(h => h.taskId === taskId);
     const users = Storage.getUsers();
-    
+
     let text = `=== HISTORIAL TAREA #${taskId} ===\n\n`;
-    
+
     if (history.length === 0) {
         text += 'No hay historial\n';
     } else {
@@ -692,9 +707,9 @@ function loadHistory() {
 function loadAllHistory() {
     const history = Storage.getHistory();
     const users = Storage.getUsers();
-    
+
     let text = '=== HISTORIAL COMPLETO ===\n\n';
-    
+
     if (history.length === 0) {
         text += 'No hay historial\n';
     } else {
@@ -714,12 +729,12 @@ function loadAllHistory() {
 function loadNotifications() {
     if (!currentUser) return;
 
-    const notifications = Storage.getNotifications().filter(n => 
+    const notifications = Storage.getNotifications().filter(n =>
         n.userId === currentUser.id && !n.read
     );
-    
+
     let text = '=== NOTIFICACIONES ===\n\n';
-    
+
     if (notifications.length === 0) {
         text += 'No hay notificaciones nuevas\n';
     } else {
@@ -749,11 +764,11 @@ function searchTasks() {
     const tasks = Storage.getTasks();
     const projects = Storage.getProjects();
     const tbody = document.getElementById('searchTableBody');
-    
+
     tbody.innerHTML = '';
 
     const filtered = tasks.filter(task => {
-        if (searchText && !task.title.toLowerCase().includes(searchText) && 
+        if (searchText && !task.title.toLowerCase().includes(searchText) &&
             !task.description.toLowerCase().includes(searchText)) {
             return false;
         }
@@ -821,9 +836,9 @@ function generateReport(type) {
 function exportCSV() {
     const tasks = Storage.getTasks();
     const projects = Storage.getProjects();
-    
+
     let csv = 'ID,Título,Estado,Prioridad,Proyecto\n';
-    
+
     tasks.forEach(task => {
         const project = projects.find(p => p.id === task.projectId);
         csv += `${task.id},"${task.title}","${task.status || 'Pendiente'}","${task.priority || 'Media'}","${project ? project.name : 'Sin proyecto'}"\n`;
@@ -836,6 +851,6 @@ function exportCSV() {
     a.download = 'export_tasks.csv';
     a.click();
     window.URL.revokeObjectURL(url);
-    
+
     alert('Exportado a export_tasks.csv');
 }
