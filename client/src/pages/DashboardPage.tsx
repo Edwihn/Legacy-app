@@ -186,35 +186,35 @@ const DashboardPage: React.FC = () => {
                         {/* Tarjeta Informativa */}
                         <div className="card p-8">
                             <h2 className="text-2xl font-bold text-gray-900 mb-4">
-                                🚀 Welcome to the MERN Task Manager
+                                🚀 Welcome to the Task Manager
                             </h2>
                             <p className="text-gray-600 mb-4">
-                                Professional task management system refactored with modern architecture:
+                                A comprehensive solution to organize and track your work efficiently:
                             </p>
                             <ul className="space-y-2 text-gray-700">
                                 <li className="flex items-center">
                                     <span className="text-green-500 mr-2">✓</span>
-                                    <strong>Backend:</strong>&nbsp;Node.js + Express + TypeScript
+                                    Create and organize tasks with priorities and due dates
                                 </li>
                                 <li className="flex items-center">
                                     <span className="text-green-500 mr-2">✓</span>
-                                    <strong>Database:</strong>&nbsp;MongoDB Atlas with Mongoose
+                                    Group tasks into projects for better organization
                                 </li>
                                 <li className="flex items-center">
                                     <span className="text-green-500 mr-2">✓</span>
-                                    <strong>Frontend:</strong>&nbsp;React + TypeScript + Vite
+                                    Track progress with real-time status updates
                                 </li>
                                 <li className="flex items-center">
                                     <span className="text-green-500 mr-2">✓</span>
-                                    <strong>Styles:</strong>&nbsp;TailwindCSS with modern design
+                                    Monitor productivity with detailed reports and statistics
                                 </li>
                                 <li className="flex items-center">
                                     <span className="text-green-500 mr-2">✓</span>
-                                    <strong>Architecture:</strong>&nbsp;Scalable MVC pattern
+                                    Stay on top of deadlines with overdue alerts
                                 </li>
                                 <li className="flex items-center">
                                     <span className="text-green-500 mr-2">✓</span>
-                                    <strong>Authentication:</strong>&nbsp;JWT + bcrypt
+                                    Collaborate securely with user authentication
                                 </li>
                             </ul>
 
